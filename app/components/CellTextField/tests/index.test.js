@@ -5,7 +5,10 @@ import expect from 'expect';
 // import React from 'react';
 
 describe('<CellTextField />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
+  it('should render the component if no items are passed', () => {
+    const renderedComponent = render(
+      <CellTextField />
+    );
+    expect().toExist();
   });
 });

@@ -21,9 +21,16 @@ class CellTextField extends React.Component { // eslint-disable-line react/prefe
     width: React.PropTypes.string,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      label: this.props.label,
+      floatingLabelFocusColor: 'rgb(0, 188, 212)',
+    };
+  }
+
   checkInput = (e) => {
     const textValue = Number(e.target.value.trim());
-    console.log(textValue);
     if (Number.isNaN(textValue)) {
       this.setState({
         label: 'Please input number!',
@@ -36,14 +43,6 @@ class CellTextField extends React.Component { // eslint-disable-line react/prefe
       });
     }
   };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      label: this.props.label,
-      floatingLabelFocusColor: 'rgb(0, 188, 212)',
-    };
-  }
 
   render() {
     const { width } = this.props;
