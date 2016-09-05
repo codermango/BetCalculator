@@ -152,7 +152,13 @@ export class HomePage extends React.Component {
               enableSelectAll={false}
             >
               <TableRow>
-                <TableHeaderColumn colSpan="4" style={{textAlign: 'center'}}>
+                <TableHeaderColumn
+                  colSpan="4"
+                  style={{
+                    textAlign: 'center',
+                    fontSize: '16px'
+                  }}
+                >
                   Please input bets
                 </TableHeaderColumn>
               </TableRow>
@@ -180,6 +186,11 @@ export class HomePage extends React.Component {
               {rows.map( (row) => (row))}
             </TableBody>
           </Table>
+        </div>
+        <div className={styles.resultSection}>
+          <CellTextField width="100%" label="First horse number" />
+          <CellTextField width="100%" label="Second horse number" />
+          <CellTextField width="100%" label="Third horse number" />
         </div>
         <div className={styles.rowChangeButton}>
           <FloatingActionButton onClick={this.addRow}>

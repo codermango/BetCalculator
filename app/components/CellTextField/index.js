@@ -22,7 +22,7 @@ class CellTextField extends React.Component { // eslint-disable-line react/prefe
   };
 
   checkInput = (e) => {
-    const textValue = Number(e.target.value);
+    const textValue = Number(e.target.value.trim());
     console.log(textValue);
     if (Number.isNaN(textValue)) {
       this.setState({
