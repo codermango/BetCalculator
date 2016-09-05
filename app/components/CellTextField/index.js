@@ -27,8 +27,8 @@ class CellTextField extends React.Component { // eslint-disable-line react/prefe
         <TextField
           floatingLabelText={label}
           style={{
-            fontSize: '1vw',
-            width: 'auto',
+            fontSize: '0.8vw',
+            width: '80%',
           }}
           inputStyle={{
             margin: '0',

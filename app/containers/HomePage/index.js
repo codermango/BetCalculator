@@ -9,6 +9,9 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import TextField from 'material-ui/TextField';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import ContentRemove from 'material-ui/svg-icons/content/remove';
 import { createStructuredSelector } from 'reselect';
 
 import {
@@ -88,41 +91,53 @@ export class HomePage extends React.Component {
     this.openRoute('/features');
   };
 
-  static tableStyle = {
-    tableRowColumnStyle: {
-      display: 'flex',
-      height: 'auto',
+  addRow = () => {
+    const rowNum = this.state.rowNum;
+    this.setState({ rowNum: rowNum + 1 });
+  };
+
+  removeRow = () => {
+    const rowNum = this.state.rowNum;
+    if (this.state.rowNum > 1) {
+      this.setState({ rowNum: rowNum -1 });
     }
   };
 
   constructor(props) {
     super(props);
-
     this.state = {
-      fixedHeader: true,
-      fixedFooter: true,
-      stripedRows: false,
-      showRowHover: false,
-      selectable: true,
-      multiSelectable: false,
-      enableSelectAll: false,
-      deselectOnClickaway: true,
-      showCheckboxes: false,
-      height: '300px',
+      rowNum: 1,
     };
   }
 
-  handleToggle = (event, toggled) => {
-    this.setState({
-      [event.target.name]: toggled,
-    });
-  };
-
-  handleChange = (event) => {
-    this.setState({height: event.target.value});
-  };
-
   render() {
+
+    let rows = [];
+    for (let i=0; i<this.state.rowNum; i++) {
+      rows.push(
+        <TableRow key={i}>
+          <TableRowColumn>
+            <CellTextField width="50%" label="Horse Num" />
+            <CellTextField width="50%" label="Amount" />
+          </TableRowColumn>
+          <TableRowColumn>
+            <CellTextField width="50%" label="Horse Num" />
+            <CellTextField width="50%" label="Amount" />
+          </TableRowColumn>
+          <TableRowColumn>
+            <CellTextField width="33%" label="Horse Num" />
+            <CellTextField width="33%" label="Horse Num" />
+            <CellTextField width="33%" label="Amount" />
+          </TableRowColumn>
+          <TableRowColumn>
+            <CellTextField width="33%" label="Horse Num" />
+            <CellTextField width="33%" label="Horse Num" />
+            <CellTextField width="33%" label="Amount" />
+          </TableRowColumn>
+        </TableRow>
+      );
+    }
+
     return (
       <div className={styles.homePage}>
         <div className={styles.betTable}>
@@ -142,10 +157,18 @@ export class HomePage extends React.Component {
                 </TableHeaderColumn>
               </TableRow>
               <TableRow>
-                <TableHeaderColumn tooltip="The ID">WIN</TableHeaderColumn>
-                <TableHeaderColumn tooltip="The Name">PLACE</TableHeaderColumn>
-                <TableHeaderColumn tooltip="The Status">EXACT</TableHeaderColumn>
-                <TableHeaderColumn tooltip="The Status">QUINELLA</TableHeaderColumn>
+                <TableHeaderColumn>
+                  <CellTextField width="100%" label="WIN Commission Rate" />
+                </TableHeaderColumn>
+                <TableHeaderColumn>
+                  <CellTextField width="100%" label="PLACE Commission Rate" />
+                </TableHeaderColumn>
+                <TableHeaderColumn>
+                  <CellTextField width="100%" label="EXACT Commission Rate" />
+                </TableHeaderColumn>
+                <TableHeaderColumn>
+                  <CellTextField width="100%" label="QUINELLA Commission Rate" />
+                </TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody
@@ -154,32 +177,17 @@ export class HomePage extends React.Component {
               showRowHover={true}
               stripedRows={false}
             >
-              {tableData.map( (row, index) => (
-                <TableRow key={index}>
-                  <TableRowColumn
-
-                  >
-                    <CellTextField width="50%" label="Horse Num" />
-                    <CellTextField width="50%" label="Amount" />
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    <CellTextField width="50%" label="Horse Num" />
-                    <CellTextField width="50%" label="Amount" />
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    <CellTextField width="33%" label="Horse Num" />
-                    <CellTextField width="33%" label="Horse Num" />
-                    <CellTextField width="33%" label="Amount" />
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    <CellTextField width="33%" label="Horse Num" />
-                    <CellTextField width="33%" label="Horse Num" />
-                    <CellTextField width="33%" label="Amount" />
-                  </TableRowColumn>
-                </TableRow>
-              ))}
+              {rows.map( (row) => (row))}
             </TableBody>
           </Table>
+        </div>
+        <div className={styles.rowChangeButton}>
+          <FloatingActionButton onClick={this.addRow}>
+            <ContentAdd />
+          </FloatingActionButton>
+          <FloatingActionButton onClick={this.removeRow}>
+            <ContentRemove />
+          </FloatingActionButton>
         </div>
       </div>
     );
@@ -188,38 +196,19 @@ export class HomePage extends React.Component {
 
 HomePage.propTypes = {
   changeRoute: React.PropTypes.func,
-  loading: React.PropTypes.bool,
-  error: React.PropTypes.oneOfType([
-    React.PropTypes.object,
-    React.PropTypes.bool,
-  ]),
-  repos: React.PropTypes.oneOfType([
-    React.PropTypes.array,
-    React.PropTypes.bool,
-  ]),
-  onSubmitForm: React.PropTypes.func,
-  username: React.PropTypes.string,
-  onChangeUsername: React.PropTypes.func,
+
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
     changeRoute: (url) => dispatch(push(url)),
-    onSubmitForm: (evt) => {
-      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(loadRepos());
-    },
 
     dispatch,
   };
 }
 
 const mapStateToProps = createStructuredSelector({
-  repos: selectRepos(),
-  username: selectUsername(),
-  loading: selectLoading(),
-  error: selectError(),
+
 });
 
 // Wrap the component to inject dispatch and state into it

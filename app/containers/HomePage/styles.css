@@ -8,3 +8,18 @@
 .betTable {
   width: 80%;
 }
+
+.rowChangeButton {
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+}
+
+.title {
+  text-transform: uppercase;
+  padding: 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+}
