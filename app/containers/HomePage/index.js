@@ -7,9 +7,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import Helmet from 'react-helmet';
-
-import messages from './messages';
+import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import TextField from 'material-ui/TextField';
 import { createStructuredSelector } from 'reselect';
 
 import {
@@ -25,15 +24,44 @@ import {
 import { changeUsername } from './actions';
 import { loadRepos } from '../App/actions';
 
-import { FormattedMessage } from 'react-intl';
-import RepoListItem from 'containers/RepoListItem';
-import Button from 'components/Button';
-import H2 from 'components/H2';
-import List from 'components/List';
-import ListItem from 'components/ListItem';
-import LoadingIndicator from 'components/LoadingIndicator';
+import CellTextField from 'components/CellTextField';
+
 
 import styles from './styles.css';
+
+const tableData = [
+  {
+    name: 'John Smith',
+    status: 'Employed',
+    selected: true,
+  },
+  {
+    name: 'Randal White',
+    status: 'Unemployed',
+  },
+  {
+    name: 'Stephanie Sanders',
+    status: 'Employed',
+    selected: true,
+  },
+  {
+    name: 'Steve Brown',
+    status: 'Employed',
+  },
+  {
+    name: 'Joyce Whitten',
+    status: 'Employed',
+  },
+  {
+    name: 'Samuel Roberts',
+    status: 'Employed',
+  },
+  {
+    name: 'Adam Moore',
+    status: 'Employed',
+  },
+];
+
 
 export class HomePage extends React.Component {
   /**
@@ -60,69 +88,100 @@ export class HomePage extends React.Component {
     this.openRoute('/features');
   };
 
-  render() {
-    let mainContent = null;
-
-    // Show a loading indicator when we're loading
-    if (this.props.loading) {
-      mainContent = (<List component={LoadingIndicator} />);
-
-    // Show an error if there is one
-    } else if (this.props.error !== false) {
-      const ErrorComponent = () => (
-        <ListItem item={'Something went wrong, please try again!'} />
-      );
-      mainContent = (<List component={ErrorComponent} />);
-
-    // If we're not loading, don't have an error and there are repos, show the repos
-    } else if (this.props.repos !== false) {
-      mainContent = (<List items={this.props.repos} component={RepoListItem} />);
+  static tableStyle = {
+    tableRowColumnStyle: {
+      display: 'flex',
+      height: 'auto',
     }
+  };
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      fixedHeader: true,
+      fixedFooter: true,
+      stripedRows: false,
+      showRowHover: false,
+      selectable: true,
+      multiSelectable: false,
+      enableSelectAll: false,
+      deselectOnClickaway: true,
+      showCheckboxes: false,
+      height: '300px',
+    };
+  }
+
+  handleToggle = (event, toggled) => {
+    this.setState({
+      [event.target.name]: toggled,
+    });
+  };
+
+  handleChange = (event) => {
+    this.setState({height: event.target.value});
+  };
+
+  render() {
     return (
-      <article>
-        <Helmet
-          title="Home Page"
-          meta={[
-            { name: 'description', content: 'A React.js Boilerplate application homepage' },
-          ]}
-        />
-        <div>
-          <section className={`${styles.textSection} ${styles.centered}`}>
-            <H2>
-              <FormattedMessage {...messages.startProjectHeader} />
-            </H2>
-            <p>
-              <FormattedMessage {...messages.startProjectMessage} />
-            </p>
-          </section>
-          <section className={styles.textSection}>
-            <H2>
-              <FormattedMessage {...messages.trymeHeader} />
-            </H2>
-            <form className={styles.usernameForm} onSubmit={this.props.onSubmitForm}>
-              <label htmlFor="username">
-                <FormattedMessage {...messages.trymeMessage} />
-                <span className={styles.atPrefix}>
-                  <FormattedMessage {...messages.trymeAtPrefix} />
-                </span>
-                <input
-                  id="username"
-                  className={styles.input}
-                  type="text"
-                  placeholder="mxstbr"
-                  value={this.props.username}
-                  onChange={this.props.onChangeUsername}
-                />
-              </label>
-            </form>
-            {mainContent}
-          </section>
-          <Button handleRoute={this.openFeaturesPage}>
-            <FormattedMessage {...messages.featuresButton} />
-          </Button>
+      <div className={styles.homePage}>
+        <div className={styles.betTable}>
+          <Table
+            fixedHeader={true}
+            fixedFooter={false}
+            selectable={false}
+          >
+            <TableHeader
+              displaySelectAll={false}
+              adjustForCheckbox={false}
+              enableSelectAll={false}
+            >
+              <TableRow>
+                <TableHeaderColumn colSpan="4" style={{textAlign: 'center'}}>
+                  Please input bets
+                </TableHeaderColumn>
+              </TableRow>
+              <TableRow>
+                <TableHeaderColumn tooltip="The ID">WIN</TableHeaderColumn>
+                <TableHeaderColumn tooltip="The Name">PLACE</TableHeaderColumn>
+                <TableHeaderColumn tooltip="The Status">EXACT</TableHeaderColumn>
+                <TableHeaderColumn tooltip="The Status">QUINELLA</TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody
+              displayRowCheckbox={false}
+              deselectOnClickaway={false}
+              showRowHover={true}
+              stripedRows={false}
+            >
+              {tableData.map( (row, index) => (
+                <TableRow key={index}>
+                  <TableRowColumn
+
+                  >
+                    <CellTextField width="50%" label="Horse Num" />
+                    <CellTextField width="50%" label="Amount" />
+                  </TableRowColumn>
+                  <TableRowColumn>
+                    <CellTextField width="50%" label="Horse Num" />
+                    <CellTextField width="50%" label="Amount" />
+                  </TableRowColumn>
+                  <TableRowColumn>
+                    <CellTextField width="33%" label="Horse Num" />
+                    <CellTextField width="33%" label="Horse Num" />
+                    <CellTextField width="33%" label="Amount" />
+                  </TableRowColumn>
+                  <TableRowColumn>
+                    <CellTextField width="33%" label="Horse Num" />
+                    <CellTextField width="33%" label="Horse Num" />
+                    <CellTextField width="33%" label="Amount" />
+                  </TableRowColumn>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
-      </article>
+      </div>
     );
   }
 }
