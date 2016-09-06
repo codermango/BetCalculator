@@ -14,6 +14,9 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentRemove from 'material-ui/svg-icons/content/remove';
 import { createStructuredSelector } from 'reselect';
 
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
+
 import {
   selectRepos,
   selectLoading,
@@ -32,38 +35,7 @@ import CellTextField from 'components/CellTextField';
 
 import styles from './styles.css';
 
-const tableData = [
-  {
-    name: 'John Smith',
-    status: 'Employed',
-    selected: true,
-  },
-  {
-    name: 'Randal White',
-    status: 'Unemployed',
-  },
-  {
-    name: 'Stephanie Sanders',
-    status: 'Employed',
-    selected: true,
-  },
-  {
-    name: 'Steve Brown',
-    status: 'Employed',
-  },
-  {
-    name: 'Joyce Whitten',
-    status: 'Employed',
-  },
-  {
-    name: 'Samuel Roberts',
-    status: 'Employed',
-  },
-  {
-    name: 'Adam Moore',
-    status: 'Employed',
-  },
-];
+
 
 
 export class HomePage extends React.Component {
@@ -92,55 +64,32 @@ export class HomePage extends React.Component {
   };
 
   addRow = () => {
-    const rowNum = this.state.rowNum;
-    this.setState({ rowNum: rowNum + 1 });
+    const rowIndex = this.state.rowIndex.slice();
+    rowIndex.push(this.state.rowIndex[this.state.rowIndex.length - 1] + 1);
+    this.setState({ rowIndex: rowIndex });
   };
 
   removeRow = () => {
-    const rowNum = this.state.rowNum;
-    if (this.state.rowNum > 1) {
-      this.setState({ rowNum: rowNum -1 });
+    const rowIndex = this.state.rowIndex.slice();
+    rowIndex.pop();
+    if (rowIndex.length > 0) {
+      this.setState({ rowIndex: rowIndex });
     }
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      rowNum: 1,
+      rowIndex: [0],
     };
   }
 
   render() {
-
-    let rows = [];
-    for (let i=0; i<this.state.rowNum; i++) {
-      rows.push(
-        <TableRow key={i}>
-          <TableRowColumn>
-            <CellTextField width="50%" label="Horse Num" />
-            <CellTextField width="50%" label="Amount" />
-          </TableRowColumn>
-          <TableRowColumn>
-            <CellTextField width="50%" label="Horse Num" />
-            <CellTextField width="50%" label="Amount" />
-          </TableRowColumn>
-          <TableRowColumn>
-            <CellTextField width="33%" label="Horse Num" />
-            <CellTextField width="33%" label="Horse Num" />
-            <CellTextField width="33%" label="Amount" />
-          </TableRowColumn>
-          <TableRowColumn>
-            <CellTextField width="33%" label="Horse Num" />
-            <CellTextField width="33%" label="Horse Num" />
-            <CellTextField width="33%" label="Amount" />
-          </TableRowColumn>
-        </TableRow>
-      );
-    }
-
+    console.log(this.state.rowIndex);
     return (
       <div className={styles.homePage}>
         <div className={styles.betTable}>
+
           <Table
             fixedHeader={true}
             fixedFooter={false}
@@ -183,11 +132,39 @@ export class HomePage extends React.Component {
               showRowHover={true}
               stripedRows={false}
             >
-              {rows.map( (row) => (row))}
+              {this.state.rowIndex.map((index) => (
+                <TableRow
+                  style={{
+
+                  }}
+                  key={index}
+                >
+                  <TableRowColumn>
+                    <CellTextField width="50%" label="Horse Num" />
+                    <CellTextField width="50%" label="Amount" />
+                  </TableRowColumn>
+                  <TableRowColumn>
+                    <CellTextField width="50%" label="Horse Num" />
+                    <CellTextField width="50%" label="Amount" />
+                  </TableRowColumn>
+                  <TableRowColumn>
+                    <CellTextField width="33%" label="Horse Num" />
+                    <CellTextField width="33%" label="Horse Num" />
+                    <CellTextField width="33%" label="Amount" />
+                  </TableRowColumn>
+                  <TableRowColumn>
+                    <CellTextField width="33%" label="Horse Num" />
+                    <CellTextField width="33%" label="Horse Num" />
+                    <CellTextField width="33%" label="Amount" />
+                  </TableRowColumn>
+                </TableRow>
+              ))}
+
             </TableBody>
           </Table>
+
         </div>
-        <div className={styles.resultSection}>
+        <div className={styles.resultSection} key="mark">
           <CellTextField width="100%" label="First horse number" />
           <CellTextField width="100%" label="Second horse number" />
           <CellTextField width="100%" label="Third horse number" />
