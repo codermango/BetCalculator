@@ -1,7 +1,7 @@
 /**
  * Created by mark on 9/6/16.
  */
-
+"use strict";
 const data = [
   ['W:1:3', 'P:1:31', 'E:1,2:13', 'Q:1,2:19'],
   ['W:2:4', 'P:2:89', 'E:2,3:98', 'Q:2,3:77'],
@@ -19,7 +19,7 @@ const data = [
 
 const result = 'R:2:3:1';
 
-const horse_equal = (a, b) => (JSON.stringify(a) === JSON.stringify(b));
+const isHorseEqual = (a, b) => (JSON.stringify(a) === JSON.stringify(b));
 
 const parseOneBet = (bets) => {
   const parsedBet = {};
@@ -36,7 +36,6 @@ const parseBets = (betsList) => {
     const parsedBet = parseOneBet(item);
     parsedResult.push(parsedBet);
   }
-  // console.log(parsedResult);
   return parsedResult;
 };
 
@@ -44,28 +43,45 @@ const parseResult = (result) => {
   return result.split(':').slice(1);
 };
 
+
 const ruleCalculator = (data, result, ruleType, commission) => {
+
   // console.log(data);
   const totalAmount = data.reduce((x, y) => x + y[ruleType].amount, 0);
-  const restAmount = totalAmount * commission;
-  // console.log(restAmount);
+  const restAmount = totalAmount * (1 - commission);
+  console.log(restAmount);
+
+  let dividend = null;
   if (ruleType === 'W') {
-    const winAmount = data.reduce((x, y) => {
-      if (horse_equal(y[ruleType].horseNum, result[0])) {
-        return x + y[ruleType].amount;
+    let wAmount = 0;
+    for(const bet of data) {
+      if(isHorseEqual(bet[ruleType].horseNum, result.slice(0, 1))) {
+        wAmount += bet[ruleType].amount;
       }
-    }, 0);
-    console.log(winAmount);
+    }
+    dividend = Number((restAmount / wAmount).toFixed(2));
+  } else if (ruleType === 'P') {
+    let pAmount = [0, 0, 0];
+    for(const bet of data) {
+      for(let i=0; i<result.length; i++) {
+        if(isHorseEqual(bet[ruleType].horseNum, result.slice(i, i+1))) {
+          pAmount[i] += bet[ruleType].amount;
+        }
+      }
+    }
+    dividend = pAmount.map(x => Number((restAmount / 3 / x).toFixed(2)));
   }
+  return dividend;
 };
 
 
 const calculator = (data, result, wCommission=0.15, pCommission=0.12, eCommission=0.18, qCommission=0.18) => {
   const parsedData = parseBets(data);
   const parsedResult = parseResult(result);
-  console.log(parsedResult);
-  ruleCalculator(parsedData, parsedResult, 'W', wCommission);
-
+  const wDividend = ruleCalculator(parsedData, parsedResult, 'W', wCommission);
+  const pDividend = ruleCalculator(parsedData, parsedResult, 'P', pCommission);
+  console.log(wDividend);
+  console.log(pDividend);
 };
 
 // let s = horse_equal(['1', '2'], ['1', '2']);
