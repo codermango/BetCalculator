@@ -52,24 +52,50 @@ const ruleCalculator = (data, result, ruleType, commission) => {
   console.log(restAmount);
 
   let dividend = null;
-  if (ruleType === 'W') {
-    let wAmount = 0;
-    for(const bet of data) {
-      if(isHorseEqual(bet[ruleType].horseNum, result.slice(0, 1))) {
-        wAmount += bet[ruleType].amount;
-      }
-    }
-    dividend = Number((restAmount / wAmount).toFixed(2));
-  } else if (ruleType === 'P') {
-    let pAmount = [0, 0, 0];
-    for(const bet of data) {
-      for(let i=0; i<result.length; i++) {
-        if(isHorseEqual(bet[ruleType].horseNum, result.slice(i, i+1))) {
-          pAmount[i] += bet[ruleType].amount;
+
+  switch (ruleType) {
+    case 'W':
+      let wAmount = 0;
+      for(const bet of data) {
+        if(isHorseEqual(bet[ruleType].horseNum, result.slice(0, 1))) {
+          wAmount += bet[ruleType].amount;
         }
       }
-    }
-    dividend = pAmount.map(x => Number((restAmount / 3 / x).toFixed(2)));
+      dividend = Number((restAmount / wAmount).toFixed(2));
+      break;
+
+    case 'P':
+      let pAmount = [0, 0, 0];
+      for(const bet of data) {
+        for(let i=0; i<result.length; i++) {
+          if(isHorseEqual(bet[ruleType].horseNum, result.slice(i, i+1))) {
+            pAmount[i] += bet[ruleType].amount;
+          }
+        }
+      }
+      dividend = pAmount.map(x => Number((restAmount / 3 / x).toFixed(2)));
+      break;
+
+    case 'E':
+      let eAmount = 0;
+      for(const bet of data) {
+        if(isHorseEqual(bet[ruleType].horseNum, result.slice(0, 2))) {
+          eAmount += bet[ruleType].amount;
+        }
+      }
+      dividend = Number((restAmount / eAmount).toFixed(2));
+      break;
+
+    case 'Q':
+      let qAmount = 0;
+      for(const bet of data) {
+        if(isHorseEqual(bet[ruleType].horseNum, result.slice(0, 2))
+            || isHorseEqual(bet[ruleType].horseNum, result.slice(0, 2).reverse())) {
+          qAmount += bet[ruleType].amount;
+        }
+      }
+      dividend = Number((restAmount / qAmount).toFixed(2));
+      break;
   }
   return dividend;
 };
@@ -80,10 +106,13 @@ const calculator = (data, result, wCommission=0.15, pCommission=0.12, eCommissio
   const parsedResult = parseResult(result);
   const wDividend = ruleCalculator(parsedData, parsedResult, 'W', wCommission);
   const pDividend = ruleCalculator(parsedData, parsedResult, 'P', pCommission);
+  const eDividend = ruleCalculator(parsedData, parsedResult, 'E', eCommission);
+  const qDividend = ruleCalculator(parsedData, parsedResult, 'Q', qCommission);
   console.log(wDividend);
   console.log(pDividend);
+  console.log(eDividend);
+  console.log(qDividend);
 };
 
-// let s = horse_equal(['1', '2'], ['1', '2']);
-// console.log(s);
+
 calculator(data, result);
