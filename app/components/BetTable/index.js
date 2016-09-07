@@ -58,22 +58,22 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
               data.rowData.map((item, index) => (
                 <TableRow key={index}>
                   <TableRowColumn>
-                    <CellTextField defaultValue={item.w.horse[0]} width="50%" label="Horse Num" />
-                    <CellTextField defaultValue={item.w.amount.toString()} width="50%" label="Amount" />
+                    <CellTextField rowIndex={index} defaultValue={item.w.horse[0]} width="50%" label="Horse Num" />
+                    <CellTextField rowIndex={index} defaultValue={item.w.amount.toString()} width="50%" label="Amount" />
                   </TableRowColumn>
                   <TableRowColumn>
-                    <CellTextField defaultValue={item.p.horse[0]} width="50%" label="Horse Num" />
-                    <CellTextField defaultValue={item.p.amount.toString()} width="50%" label="Amount" />
+                    <CellTextField rowIndex={index} defaultValue={item.p.horse[0]} width="50%" label="Horse Num" />
+                    <CellTextField rowIndex={index} defaultValue={item.p.amount.toString()} width="50%" label="Amount" />
                   </TableRowColumn>
                   <TableRowColumn>
-                    <CellTextField defaultValue={item.e.horse[0]} width="33%" label="Horse Num" />
-                    <CellTextField defaultValue={item.e.horse[1]} width="33%" label="Horse Num" />
-                    <CellTextField defaultValue={item.e.amount.toString()} width="33%" label="Amount" />
+                    <CellTextField rowIndex={index} defaultValue={item.e.horse[0]} width="33%" label="Horse Num" />
+                    <CellTextField rowIndex={index} defaultValue={item.e.horse[1]} width="33%" label="Horse Num" />
+                    <CellTextField rowIndex={index} defaultValue={item.e.amount.toString()} width="33%" label="Amount" />
                   </TableRowColumn>
                   <TableRowColumn>
-                    <CellTextField defaultValue={item.q.horse[0]} width="33%" label="Horse Num" />
-                    <CellTextField defaultValue={item.q.horse[1]} width="33%" label="Horse Num" />
-                    <CellTextField defaultValue={item.q.amount.toString()} width="33%" label="Amount" />
+                    <CellTextField rowIndex={index} defaultValue={item.q.horse[0]} width="33%" label="Horse Num" />
+                    <CellTextField rowIndex={index} defaultValue={item.q.horse[1]} width="33%" label="Horse Num" />
+                    <CellTextField rowIndex={index} defaultValue={item.q.amount.toString()} width="33%" label="Amount" />
                   </TableRowColumn>
                 </TableRow>
               ))

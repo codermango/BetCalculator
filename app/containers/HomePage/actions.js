@@ -19,6 +19,7 @@ import {
   FETCH_DATA,
   FETCH_DATA_SUCCESS,
   FETCH_DATA_ERROR,
+  TEXT_CHANGE,
 } from './constants';
 
 /**
@@ -46,5 +47,12 @@ export function fetchDataError(error) {
   return {
     type: FETCH_DATA_ERROR,
     error,
+  };
+}
+
+export function textChange(data) {
+  return {
+    type: TEXT_CHANGE,
+    data,
   };
 }

@@ -9,8 +9,10 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
-export const CHANGE_USERNAME = 'boilerplate/Home/CHANGE_USERNAME';
-
 export const FETCH_DATA = 'FETCH_DATA';
 export const FETCH_DATA_SUCCESS = 'FETCH_DATA_SUCCESS';
 export const FETCH_DATA_ERROR = 'FETCH_DATA_ERROR';
+
+export const TEXT_CHANGE = 'TEXT_CHANGE';
+
+export const CALCULATE_DIVIDENDS = 'CALCULATE_DIVIDENDS';
