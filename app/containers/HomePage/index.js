@@ -26,11 +26,14 @@ export class HomePage extends React.Component {
 
   render() {
     const { betData } = this.props;
-    console.log(betData);
     return (
       <div className={styles.homePage}>
         <div className={styles.betTable}>
-          <BetTable />
+          {betData.get('data') ?
+            <BetTable data={betData.get('data')} />
+            :
+            ''
+          }
         </div>
         <div className={styles.resultSection}>
           <ResultSection />
