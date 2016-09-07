@@ -6,85 +6,58 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
-// import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
-// import TextField from 'material-ui/TextField';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import ContentRemove from 'material-ui/svg-icons/content/remove';
+
 import { createStructuredSelector } from 'reselect';
 
-// import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-
-import CellTextField from 'components/CellTextField';
 import BetTable from 'components/BetTable';
-
+import ResultSection from 'components/ResultSection';
 
 import styles from './styles.css';
+import { fetchData } from './actions';
+import { selectBetData } from './selectors';
 
 
 export class HomePage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      rowIndex: [0],
-    };
+  componentDidMount() {
+    if (!this.props.betData.get('data')) {
+      this.props.fetchBetData();
+    }
   }
 
-  addRow = () => {
-    const rowIndex = this.state.rowIndex.slice();
-    rowIndex.push(this.state.rowIndex[this.state.rowIndex.length - 1] + 1);
-    this.setState({ rowIndex });
-  };
-
-  removeRow = () => {
-    const rowIndex = this.state.rowIndex.slice();
-    rowIndex.pop();
-    if (rowIndex.length > 0) {
-      this.setState({ rowIndex });
-    }
-  };
-
   render() {
-    // console.log(this.state.rowIndex);
+    const { betData } = this.props;
+    console.log(betData);
     return (
       <div className={styles.homePage}>
         <div className={styles.betTable}>
           <BetTable />
         </div>
-        <div className={styles.resultSection} key="mark">
-          <CellTextField width="100%" label="First horse number" />
-          <CellTextField width="100%" label="Second horse number" />
-          <CellTextField width="100%" label="Third horse number" />
+        <div className={styles.resultSection}>
+          <ResultSection />
         </div>
-        <div className={styles.rowChangeButton}>
-          <FloatingActionButton onClick={this.addRow}>
-            <ContentAdd />
-          </FloatingActionButton>
-          <FloatingActionButton onClick={this.removeRow}>
-            <ContentRemove />
-          </FloatingActionButton>
-        </div>
+
       </div>
     );
   }
 }
 
 HomePage.propTypes = {
-  changeRoute: React.PropTypes.func,
-
+  betData: React.PropTypes.oneOfType([
+    React.PropTypes.object,
+    React.PropTypes.bool,
+  ]),
+  fetchBetData: React.PropTypes.func,
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    changeRoute: (url) => dispatch(push(url)),
-
+    fetchBetData: () => dispatch(fetchData()),
     dispatch,
   };
 }
 
 const mapStateToProps = createStructuredSelector({
-
+  betData: selectBetData(),
 });
 
 // Wrap the component to inject dispatch and state into it

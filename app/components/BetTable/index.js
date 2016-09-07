@@ -16,7 +16,6 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
   constructor(props) {
     super(props);
     this.state = {
-      rowIndex: [0],
       commission: {
         w: 0.15,
         p: 0.12,

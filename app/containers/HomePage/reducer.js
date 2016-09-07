@@ -11,22 +11,37 @@
  */
 
 import {
-  CHANGE_USERNAME,
+  FETCH_DATA,
+  FETCH_DATA_SUCCESS,
+  FETCH_DATA_ERROR,
 } from './constants';
 import { fromJS } from 'immutable';
 
 // The initial state of the App
 const initialState = fromJS({
-  username: '',
+  betData: fromJS({
+    loading: false,
+    data: false,
+    error: false,
+  }),
 });
 
 function homeReducer(state = initialState, action) {
   switch (action.type) {
-    case CHANGE_USERNAME:
-
-      // Delete prefixed '@' from the github username
+    case FETCH_DATA:
       return state
-        .set('username', action.name.replace(/@/gi, ''));
+        .setIn(['betData', 'loading'], true)
+        .setIn(['betData', 'error'], false);
+    case FETCH_DATA_SUCCESS:
+      return state
+        .setIn(['betData', 'loading'], false)
+        .setIn(['betData', 'data'], action.data)
+        .setIn(['betData', 'error'], false);
+    case FETCH_DATA_ERROR:
+      return state
+        .setIn(['betData', 'loading'], false)
+        .setIn(['betData', 'data'], false)
+        .setIn(['betData', 'error'], action.error);
     default:
       return state;
   }

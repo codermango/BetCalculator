@@ -16,7 +16,9 @@
  */
 
 import {
-  CHANGE_USERNAME,
+  FETCH_DATA,
+  FETCH_DATA_SUCCESS,
+  FETCH_DATA_ERROR,
 } from './constants';
 
 /**
@@ -26,9 +28,23 @@ import {
  *
  * @return {object}    An action object with a type of CHANGE_USERNAME
  */
-export function changeUsername(name) {
+
+export function fetchData() {
   return {
-    type: CHANGE_USERNAME,
-    name,
+    type: FETCH_DATA,
+  };
+}
+
+export function fetchDataSuccess(data) {
+  return {
+    type: FETCH_DATA_SUCCESS,
+    data,
+  };
+}
+
+export function fetchDataError(error) {
+  return {
+    type: FETCH_DATA_ERROR,
+    error,
   };
 }
