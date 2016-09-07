@@ -72,7 +72,7 @@ const rootRoute = {
   childRoutes: createRoutes(store),
 };
 
-const render = (translatedMessages) => {
+const render = () => {
   ReactDOM.render(
     <Provider store={store}>
       <Router
