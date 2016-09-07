@@ -14,15 +14,26 @@ import BetTable from 'components/BetTable';
 import ResultSection from 'components/ResultSection';
 
 import styles from './styles.css';
-import { fetchData } from './actions';
+import { fetchData, textChange } from './actions';
 import { selectBetData } from './selectors';
 
 
 export class HomePage extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.betTableTextChange = this.betTableTextChange.bind(this);
+  }
+
   componentDidMount() {
     if (!this.props.betData.get('data')) {
       this.props.fetchBetData();
     }
+  }
+
+  betTableTextChange(data, rowIndex, betType, field) {
+    console.log(data);
+    this.props.textChange(data, rowIndex, betType, field);
   }
 
   render() {
@@ -31,7 +42,7 @@ export class HomePage extends React.Component {
       <div className={styles.homePage}>
         <div className={styles.betTable}>
           {betData.get('data') ?
-            <BetTable data={betData.get('data')} />
+            <BetTable textChange={this.betTableTextChange} data={betData.get('data')} />
             :
             ''
           }
@@ -58,6 +69,7 @@ HomePage.propTypes = {
 function mapDispatchToProps(dispatch) {
   return {
     fetchBetData: () => dispatch(fetchData()),
+    textChange: (data, rowIndex, betType, field) => dispatch(textChange(data, rowIndex, betType, field)),
     dispatch,
   };
 }

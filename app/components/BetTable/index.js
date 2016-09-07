@@ -12,6 +12,16 @@ import CellTextField from 'components/CellTextField';
 import styles from './styles.css';
 
 class BetTable extends React.Component { // eslint-disable-line react/prefer-stateless-function
+
+  constructor(props) {
+    super(props);
+    this.tableTextChange = this.tableTextChange.bind(this);
+  }
+
+  tableTextChange(data, rowIndex, betType, field) {
+    this.props.textChange(data, rowIndex, betType, field);
+  }
+
   render() {
     const { data } = this.props;
     return (
@@ -58,22 +68,22 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
               data.rowData.map((item, index) => (
                 <TableRow key={index}>
                   <TableRowColumn>
-                    <CellTextField rowIndex={index} defaultValue={item.w.horse[0]} width="50%" label="Horse Num" />
-                    <CellTextField rowIndex={index} defaultValue={item.w.amount.toString()} width="50%" label="Amount" />
+                    <CellTextField cellTextChange={this.tableTextChange} rowIndex={index} betType="w" field="horse" defaultValue={item.w.horse[0]} width="50%" label="Horse Num" />
+                    <CellTextField cellTextChange={this.tableTextChange} rowIndex={index} betType="w" field="amount" defaultValue={item.w.amount.toString()} width="50%" label="Amount" />
                   </TableRowColumn>
                   <TableRowColumn>
-                    <CellTextField rowIndex={index} defaultValue={item.p.horse[0]} width="50%" label="Horse Num" />
-                    <CellTextField rowIndex={index} defaultValue={item.p.amount.toString()} width="50%" label="Amount" />
+                    <CellTextField cellTextChange={this.tableTextChange} rowIndex={index} betType="p" field="horse" defaultValue={item.p.horse[0]} width="50%" label="Horse Num" />
+                    <CellTextField cellTextChange={this.tableTextChange} rowIndex={index} betType="p" field="amount" defaultValue={item.p.amount.toString()} width="50%" label="Amount" />
                   </TableRowColumn>
                   <TableRowColumn>
-                    <CellTextField rowIndex={index} defaultValue={item.e.horse[0]} width="33%" label="Horse Num" />
-                    <CellTextField rowIndex={index} defaultValue={item.e.horse[1]} width="33%" label="Horse Num" />
-                    <CellTextField rowIndex={index} defaultValue={item.e.amount.toString()} width="33%" label="Amount" />
+                    <CellTextField cellTextChange={this.tableTextChange} rowIndex={index} betType="e" field="horse" defaultValue={item.e.horse[0]} width="33%" label="Horse Num" />
+                    <CellTextField cellTextChange={this.tableTextChange} rowIndex={index} betType="e" field="horse" defaultValue={item.e.horse[1]} width="33%" label="Horse Num" />
+                    <CellTextField cellTextChange={this.tableTextChange} rowIndex={index} betType="e" field="amount" defaultValue={item.e.amount.toString()} width="33%" label="Amount" />
                   </TableRowColumn>
                   <TableRowColumn>
-                    <CellTextField rowIndex={index} defaultValue={item.q.horse[0]} width="33%" label="Horse Num" />
-                    <CellTextField rowIndex={index} defaultValue={item.q.horse[1]} width="33%" label="Horse Num" />
-                    <CellTextField rowIndex={index} defaultValue={item.q.amount.toString()} width="33%" label="Amount" />
+                    <CellTextField cellTextChange={this.tableTextChange} rowIndex={index} betType="q" field="horse" defaultValue={item.q.horse[0]} width="33%" label="Horse Num" />
+                    <CellTextField cellTextChange={this.tableTextChange} rowIndex={index} betType="q" field="horse" defaultValue={item.q.horse[1]} width="33%" label="Horse Num" />
+                    <CellTextField cellTextChange={this.tableTextChange} rowIndex={index} betType="q" field="amount" defaultValue={item.q.amount.toString()} width="33%" label="Amount" />
                   </TableRowColumn>
                 </TableRow>
               ))

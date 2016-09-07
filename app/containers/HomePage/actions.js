@@ -50,9 +50,12 @@ export function fetchDataError(error) {
   };
 }
 
-export function textChange(data) {
+export function textChange(data, rowIndex, betType, field) {
   return {
     type: TEXT_CHANGE,
     data,
+    rowIndex,
+    betType,
+    field,
   };
 }
