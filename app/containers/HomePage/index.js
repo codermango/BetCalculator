@@ -7,7 +7,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+// import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 // import TextField from 'material-ui/TextField';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -17,6 +17,7 @@ import { createStructuredSelector } from 'reselect';
 // import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import CellTextField from 'components/CellTextField';
+import BetTable from 'components/BetTable';
 
 
 import styles from './styles.css';
@@ -49,73 +50,7 @@ export class HomePage extends React.Component {
     return (
       <div className={styles.homePage}>
         <div className={styles.betTable}>
-
-          <Table fixedHeader selectable={false}>
-            <TableHeader
-              displaySelectAll={false}
-              adjustForCheckbox={false}
-              enableSelectAll={false}
-            >
-              <TableRow>
-                <TableHeaderColumn
-                  colSpan="4"
-                  style={{
-                    textAlign: 'center',
-                    fontSize: '16px',
-                  }}
-                >
-                  Please input bets
-                </TableHeaderColumn>
-              </TableRow>
-              <TableRow>
-                <TableHeaderColumn>
-                  <CellTextField width="100%" label="WIN Commission Rate" />
-                </TableHeaderColumn>
-                <TableHeaderColumn>
-                  <CellTextField width="100%" label="PLACE Commission Rate" />
-                </TableHeaderColumn>
-                <TableHeaderColumn>
-                  <CellTextField width="100%" label="EXACT Commission Rate" />
-                </TableHeaderColumn>
-                <TableHeaderColumn>
-                  <CellTextField width="100%" label="QUINELLA Commission Rate" />
-                </TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody
-              showRowHover
-              displayRowCheckbox={false}
-              deselectOnClickaway={false}
-              stripedRows={false}
-            >
-              {this.state.rowIndex.map((index) => (
-                <TableRow
-                  key={index}
-                >
-                  <TableRowColumn>
-                    <CellTextField width="50%" label="Horse Num" />
-                    <CellTextField width="50%" label="Amount" />
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    <CellTextField width="50%" label="Horse Num" />
-                    <CellTextField width="50%" label="Amount" />
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    <CellTextField width="33%" label="Horse Num" />
-                    <CellTextField width="33%" label="Horse Num" />
-                    <CellTextField width="33%" label="Amount" />
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    <CellTextField width="33%" label="Horse Num" />
-                    <CellTextField width="33%" label="Horse Num" />
-                    <CellTextField width="33%" label="Amount" />
-                  </TableRowColumn>
-                </TableRow>
-              ))}
-
-            </TableBody>
-          </Table>
-
+          <BetTable />
         </div>
         <div className={styles.resultSection} key="mark">
           <CellTextField width="100%" label="First horse number" />

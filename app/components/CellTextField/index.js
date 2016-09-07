@@ -14,11 +14,13 @@ class CellTextField extends React.Component { // eslint-disable-line react/prefe
   static defaultProps = {
     label: 'test',
     width: '50%',
+    defaultValue: '',
   };
 
   static propTypes = {
     label: React.PropTypes.string,
     width: React.PropTypes.string,
+    defaultValue: React.PropTypes.string,
   };
 
   constructor(props) {
@@ -45,17 +47,18 @@ class CellTextField extends React.Component { // eslint-disable-line react/prefe
   };
 
   render() {
-    const { width } = this.props;
+    const { width, defaultValue } = this.props;
     return (
-      <div className={styles.cellTextField} style={{ width: width }}>
+      <div className={styles.cellTextField} style={{ width }}>
         <TextField
+          defaultValue={defaultValue}
           floatingLabelText={this.state.label}
           style={{
             fontSize: '0.8vw',
             width: '80%',
           }}
           floatingLabelFocusStyle={{
-            color: this.state.floatingLabelFocusColor
+            color: this.state.floatingLabelFocusColor,
           }}
           inputStyle={{
             margin: '0',
