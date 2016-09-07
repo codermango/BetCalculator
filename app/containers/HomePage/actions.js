@@ -20,6 +20,7 @@ import {
   FETCH_DATA_SUCCESS,
   FETCH_DATA_ERROR,
   TEXT_CHANGE,
+  COMMISSION_CHANGE,
 } from './constants';
 
 /**
@@ -57,5 +58,13 @@ export function textChange(data, rowIndex, betType, field) {
     rowIndex,
     betType,
     field,
+  };
+}
+
+export function commissionChange(data, betType) {
+  return {
+    type: COMMISSION_CHANGE,
+    data,
+    betType,
   };
 }

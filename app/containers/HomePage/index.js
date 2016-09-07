@@ -14,7 +14,7 @@ import BetTable from 'components/BetTable';
 import ResultSection from 'components/ResultSection';
 
 import styles from './styles.css';
-import { fetchData, textChange } from './actions';
+import { fetchData, textChange, commissionChange } from './actions';
 import { selectBetData } from './selectors';
 
 
@@ -23,6 +23,7 @@ export class HomePage extends React.Component {
   constructor(props) {
     super(props);
     this.betTableTextChange = this.betTableTextChange.bind(this);
+    this.betTableCommissionChange = this.betTableCommissionChange.bind(this);
   }
 
   componentDidMount() {
@@ -32,8 +33,11 @@ export class HomePage extends React.Component {
   }
 
   betTableTextChange(data, rowIndex, betType, field) {
-    console.log(data);
     this.props.textChange(data, rowIndex, betType, field);
+  }
+
+  betTableCommissionChange(data, betType) {
+    this.props.commissionChange(data, betType);
   }
 
   render() {
@@ -42,7 +46,11 @@ export class HomePage extends React.Component {
       <div className={styles.homePage}>
         <div className={styles.betTable}>
           {betData.get('data') ?
-            <BetTable textChange={this.betTableTextChange} data={betData.get('data')} />
+            <BetTable
+              textChange={this.betTableTextChange}
+              commissionChange={this.betTableCommissionChange}
+              data={betData.get('data')}
+            />
             :
             ''
           }
@@ -70,6 +78,7 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchBetData: () => dispatch(fetchData()),
     textChange: (data, rowIndex, betType, field) => dispatch(textChange(data, rowIndex, betType, field)),
+    commissionChange: (data, betType) => dispatch(commissionChange(data, betType)),
     dispatch,
   };
 }

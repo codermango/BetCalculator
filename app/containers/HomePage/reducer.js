@@ -15,6 +15,7 @@ import {
   FETCH_DATA_SUCCESS,
   FETCH_DATA_ERROR,
   TEXT_CHANGE,
+  COMMISSION_CHANGE,
 } from './constants';
 import { fromJS } from 'immutable';
 
@@ -44,14 +45,22 @@ function homeReducer(state = initialState, action) {
         .setIn(['betData', 'data'], false)
         .setIn(['betData', 'error'], action.error);
 
-    case TEXT_CHANGE:
-      // update(state, {b: {$set: obj.b * 2}});
+    case TEXT_CHANGE: {
       let newState = Object.assign({}, state.get('betData').get('data'));
       newState.rowData[action.rowIndex][action.betType][action.field] = action.data;
       return state
         .setIn(['betData', 'loading'], false)
         .update(['betData', 'data'], newState => newState)
         .setIn(['betData', 'error'], false);
+    }
+    case COMMISSION_CHANGE: {
+      let newState = Object.assign({}, state.get('betData').get('data'));
+      newState.commission[action.betType] = action.data;
+      return state
+        .setIn(['betData', 'loading'], false)
+        .update(['betData', 'data'], newState => newState)
+        .setIn(['betData', 'error'], false);
+    }
     default:
       return state;
   }

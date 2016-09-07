@@ -39,7 +39,12 @@ class CellTextField extends React.Component { // eslint-disable-line react/prefe
         label: this.props.label,
         floatingLabelFocusColor: 'rgb(0, 188, 212)',
       });
-      this.props.cellTextChange(value, this.props.rowIndex, this.props.betType, this.props.field);
+
+      if (this.props.hasOwnProperty('rowIndex')) {
+        this.props.cellTextChange(value, this.props.rowIndex, this.props.betType, this.props.field);
+      } else {
+        this.props.cellCommissionChange(value, this.props.betType);
+      }
     }
 
 
