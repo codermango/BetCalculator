@@ -7,28 +7,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
-import TextField from 'material-ui/TextField';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+// import TextField from 'material-ui/TextField';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentRemove from 'material-ui/svg-icons/content/remove';
 import { createStructuredSelector } from 'reselect';
 
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-
-
-import {
-  selectRepos,
-  selectLoading,
-  selectError,
-} from 'containers/App/selectors';
-
-import {
-  selectUsername,
-} from './selectors';
-
-import { changeUsername } from './actions';
-import { loadRepos } from '../App/actions';
+// import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import CellTextField from 'components/CellTextField';
 
@@ -36,47 +22,7 @@ import CellTextField from 'components/CellTextField';
 import styles from './styles.css';
 
 
-
-
 export class HomePage extends React.Component {
-  /**
-   * when initial state username is not null, submit the form to load repos
-   */
-  componentDidMount() {
-    if (this.props.username && this.props.username.trim().length > 0) {
-      this.props.onSubmitForm();
-    }
-  }
-  /**
-   * Changes the route
-   *
-   * @param  {string} route The route we want to go to
-   */
-  openRoute = (route) => {
-    this.props.changeRoute(route);
-  };
-
-  /**
-   * Changed route to '/features'
-   */
-  openFeaturesPage = () => {
-    this.openRoute('/features');
-  };
-
-  addRow = () => {
-    const rowIndex = this.state.rowIndex.slice();
-    rowIndex.push(this.state.rowIndex[this.state.rowIndex.length - 1] + 1);
-    this.setState({ rowIndex: rowIndex });
-  };
-
-  removeRow = () => {
-    const rowIndex = this.state.rowIndex.slice();
-    rowIndex.pop();
-    if (rowIndex.length > 0) {
-      this.setState({ rowIndex: rowIndex });
-    }
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -84,17 +30,27 @@ export class HomePage extends React.Component {
     };
   }
 
+  addRow = () => {
+    const rowIndex = this.state.rowIndex.slice();
+    rowIndex.push(this.state.rowIndex[this.state.rowIndex.length - 1] + 1);
+    this.setState({ rowIndex });
+  };
+
+  removeRow = () => {
+    const rowIndex = this.state.rowIndex.slice();
+    rowIndex.pop();
+    if (rowIndex.length > 0) {
+      this.setState({ rowIndex });
+    }
+  };
+
   render() {
-    console.log(this.state.rowIndex);
+    // console.log(this.state.rowIndex);
     return (
       <div className={styles.homePage}>
         <div className={styles.betTable}>
 
-          <Table
-            fixedHeader={true}
-            fixedFooter={false}
-            selectable={false}
-          >
+          <Table fixedHeader selectable={false}>
             <TableHeader
               displaySelectAll={false}
               adjustForCheckbox={false}
@@ -105,7 +61,7 @@ export class HomePage extends React.Component {
                   colSpan="4"
                   style={{
                     textAlign: 'center',
-                    fontSize: '16px'
+                    fontSize: '16px',
                   }}
                 >
                   Please input bets
@@ -127,16 +83,13 @@ export class HomePage extends React.Component {
               </TableRow>
             </TableHeader>
             <TableBody
+              showRowHover
               displayRowCheckbox={false}
               deselectOnClickaway={false}
-              showRowHover={true}
               stripedRows={false}
             >
               {this.state.rowIndex.map((index) => (
                 <TableRow
-                  style={{
-
-                  }}
                   key={index}
                 >
                   <TableRowColumn>

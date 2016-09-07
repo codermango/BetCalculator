@@ -1,8 +1,8 @@
 /**
  * Created by mark on 9/6/16.
  */
-"use strict";
-const data = [
+
+const betsData = [
   ['W:1:3', 'P:1:31', 'E:1,2:13', 'Q:1,2:19'],
   ['W:2:4', 'P:2:89', 'E:2,3:98', 'Q:2,3:77'],
   ['W:3:5', 'P:3:28', 'E:1,3:82', 'Q:1,3:26'],
@@ -17,15 +17,15 @@ const data = [
   ['W:4:15', 'P:4:105', 'E:3,2:51', 'Q:2,4:25'],
 ];
 
-const result = 'R:2:3:1';
+const betsResult = 'R:2:3:1';
 
 const isHorseEqual = (a, b) => (JSON.stringify(a) === JSON.stringify(b));
 
 const parseOneBet = (bets) => {
   const parsedBet = {};
-  for(let bet of bets) {
+  for (const bet of bets) {
     const item = bet.split(':');
-    parsedBet[item[0]] = {horseNum: item[1].split(','), amount: Number(item[2])};
+    parsedBet[item[0]] = { horseNum: item[1].split(','), amount: Number(item[2]) };
   }
   return parsedBet;
 };
@@ -39,69 +39,68 @@ const parseBets = (betsList) => {
   return parsedResult;
 };
 
-const parseResult = (result) => {
-  return result.split(':').slice(1);
-};
+const parseResult = (r) => (r.split(':').slice(1));
 
-
-const ruleCalculator = (data, result, ruleType, commission) => {
-
+const ruleCalculator = (parsedData, parsedResult, ruleType, commission) => {
   // console.log(data);
-  const totalAmount = data.reduce((x, y) => x + y[ruleType].amount, 0);
+  const totalAmount = parsedData.reduce((x, y) => x + y[ruleType].amount, 0);
   const restAmount = totalAmount * (1 - commission);
-  console.log(restAmount);
+  // console.log(restAmount);
 
   let dividend = null;
 
   switch (ruleType) {
-    case 'W':
+    case 'W': {
       let wAmount = 0;
-      for(const bet of data) {
-        if(isHorseEqual(bet[ruleType].horseNum, result.slice(0, 1))) {
+      for (const bet of parsedData) {
+        if (isHorseEqual(bet[ruleType].horseNum, parsedResult.slice(0, 1))) {
           wAmount += bet[ruleType].amount;
         }
       }
       dividend = Number((restAmount / wAmount).toFixed(2));
       break;
-
-    case 'P':
-      let pAmount = [0, 0, 0];
-      for(const bet of data) {
-        for(let i=0; i<result.length; i++) {
-          if(isHorseEqual(bet[ruleType].horseNum, result.slice(i, i+1))) {
+    }
+    case 'P': {
+      const pAmount = [0, 0, 0];
+      for (const bet of parsedData) {
+        for (let i = 0; i < parsedResult.length; i++) {
+          if (isHorseEqual(bet[ruleType].horseNum, parsedResult.slice(i, i + 1))) {
             pAmount[i] += bet[ruleType].amount;
           }
         }
       }
       dividend = pAmount.map(x => Number((restAmount / 3 / x).toFixed(2)));
       break;
-
-    case 'E':
+    }
+    case 'E': {
       let eAmount = 0;
-      for(const bet of data) {
-        if(isHorseEqual(bet[ruleType].horseNum, result.slice(0, 2))) {
+      for (const bet of parsedData) {
+        if (isHorseEqual(bet[ruleType].horseNum, parsedResult.slice(0, 2))) {
           eAmount += bet[ruleType].amount;
         }
       }
       dividend = Number((restAmount / eAmount).toFixed(2));
       break;
-
-    case 'Q':
+    }
+    case 'Q': {
       let qAmount = 0;
-      for(const bet of data) {
-        if(isHorseEqual(bet[ruleType].horseNum, result.slice(0, 2))
-            || isHorseEqual(bet[ruleType].horseNum, result.slice(0, 2).reverse())) {
+      for (const bet of parsedData) {
+        if (isHorseEqual(bet[ruleType].horseNum, parsedResult.slice(0, 2))
+          || isHorseEqual(bet[ruleType].horseNum, parsedResult.slice(0, 2).reverse())) {
           qAmount += bet[ruleType].amount;
         }
       }
       dividend = Number((restAmount / qAmount).toFixed(2));
       break;
+    }
+    default:
+      dividend = false;
   }
   return dividend;
 };
 
 
-const calculator = (data, result, wCommission=0.15, pCommission=0.12, eCommission=0.18, qCommission=0.18) => {
+const calculator = (data, result, wCommission = 0.15, pCommission = 0.12, eCommission = 0.18, qCommission = 0.18) => {
   const parsedData = parseBets(data);
   const parsedResult = parseResult(result);
   const wDividend = ruleCalculator(parsedData, parsedResult, 'W', wCommission);
@@ -112,7 +111,8 @@ const calculator = (data, result, wCommission=0.15, pCommission=0.12, eCommissio
   console.log(pDividend);
   console.log(eDividend);
   console.log(qDividend);
+  console.log(parsedData);
 };
 
 
-calculator(data, result);
+calculator(betsData, betsResult);
