@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
-
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import CellTextField from 'components/CellTextField';
 
 import styles from './styles.css';
@@ -31,6 +31,9 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
     const { data } = this.props;
     return (
       <div className={styles.betTable}>
+
+
+
         <Table fixedHeader selectable={false}>
           <TableHeader
             displaySelectAll={false}
@@ -200,6 +203,8 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
             }
           </TableBody>
         </Table>
+
+
       </div>
     );
   }

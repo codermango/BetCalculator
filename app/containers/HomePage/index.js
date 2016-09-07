@@ -7,7 +7,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
-
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { createStructuredSelector } from 'reselect';
 
 import BetTable from 'components/BetTable';
@@ -43,7 +43,18 @@ export class HomePage extends React.Component {
   render() {
     const { betData } = this.props;
     return (
+      <ReactCSSTransitionGroup
+        transitionName={{
+          appear: styles.appear,
+          appearActive: styles.appearActive,
+        }}
+        transitionAppear={true}
+        transitionEnterTimeout={6000}
+        transitionLeaveTimeout={6000}
+        transitionAppearTimeout={6000}
+      >
       <div className={styles.homePage}>
+
         <div className={styles.betTable}>
           {betData.get('data') ?
             <BetTable
@@ -55,6 +66,7 @@ export class HomePage extends React.Component {
             ''
           }
         </div>
+
         <div className={styles.resultSection}>
           <ResultSection />
         </div>
@@ -62,6 +74,7 @@ export class HomePage extends React.Component {
           <RaisedButton label="Calculate" />
         </div>
       </div>
+      </ReactCSSTransitionGroup>
     );
   }
 }

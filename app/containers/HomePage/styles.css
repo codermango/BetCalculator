@@ -35,3 +35,12 @@
   right: 20px;
   bottom: 20px;
 }
+
+.appear {
+  opacity: 0;
+}
+
+.appearActive {
+  opacity: 1;
+  transition: opacity 6000ms ease-in;
+}
