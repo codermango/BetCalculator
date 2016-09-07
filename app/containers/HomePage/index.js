@@ -6,6 +6,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import { createStructuredSelector } from 'reselect';
 
@@ -38,7 +39,9 @@ export class HomePage extends React.Component {
         <div className={styles.resultSection}>
           <ResultSection />
         </div>
-
+        <div className={styles.button}>
+          <RaisedButton label="Calculate" />
+        </div>
       </div>
     );
   }
