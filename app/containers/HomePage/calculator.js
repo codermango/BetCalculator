@@ -42,9 +42,12 @@ const parseBets = (betsList) => {
 const parseResult = (r) => (r.split(':').slice(1));
 
 function ruleCalculator(parsedData, parsedResult, ruleType, commission) {
-  const totalAmount = parsedData.reduce((x, y) => x + y[ruleType].amount, 0);
+  commission = Number(commission);
+  const totalAmount = parsedData.reduce((x, y) => {
+    const amount = Number(y[ruleType].amount);
+    return x + amount;
+  }, 0);
   const restAmount = totalAmount * (1 - commission);
-  // console.log(restAmount);
 
   let dividend = null;
 
@@ -53,7 +56,7 @@ function ruleCalculator(parsedData, parsedResult, ruleType, commission) {
       let wAmount = 0;
       for (const bet of parsedData) {
         if (isHorseEqual(bet[ruleType].horse, parsedResult.slice(0, 1))) {
-          wAmount += bet[ruleType].amount;
+          wAmount += Number(bet[ruleType].amount);
         }
       }
       dividend = wAmount === 0 ? 0 : Number((restAmount / wAmount).toFixed(2));
@@ -64,10 +67,11 @@ function ruleCalculator(parsedData, parsedResult, ruleType, commission) {
       for (const bet of parsedData) {
         for (let i = 0; i < parsedResult.length; i++) {
           if (isHorseEqual(bet[ruleType].horse, parsedResult.slice(i, i + 1))) {
-            pAmount[i] += bet[ruleType].amount;
+            pAmount[i] += Number(bet[ruleType].amount);
           }
         }
       }
+      // console.log(restAmount);
       dividend = pAmount.map(x => x === 0 ? 0 : Number((restAmount / 3 / x).toFixed(2)));
       break;
     }
@@ -75,7 +79,7 @@ function ruleCalculator(parsedData, parsedResult, ruleType, commission) {
       let eAmount = 0;
       for (const bet of parsedData) {
         if (isHorseEqual(bet[ruleType].horse, parsedResult.slice(0, 2))) {
-          eAmount += bet[ruleType].amount;
+          eAmount += Number(bet[ruleType].amount);
         }
       }
       dividend = eAmount === 0 ? 0 : Number((restAmount / eAmount).toFixed(2));
@@ -86,7 +90,7 @@ function ruleCalculator(parsedData, parsedResult, ruleType, commission) {
       for (const bet of parsedData) {
         if (isHorseEqual(bet[ruleType].horse, parsedResult.slice(0, 2))
           || isHorseEqual(bet[ruleType].horse, parsedResult.slice(0, 2).reverse())) {
-          qAmount += bet[ruleType].amount;
+          qAmount += Number(bet[ruleType].amount);
         }
       }
       dividend = qAmount === 0 ? 0 : Number((restAmount / qAmount).toFixed(2));

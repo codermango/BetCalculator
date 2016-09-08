@@ -11,7 +11,13 @@ const selectBetData = () => createSelector(
   (homeState) => homeState.get('betData')
 );
 
+const selectDividends = () => createSelector(
+  selectHome(),
+  (homeState) => homeState.get('dividends')
+);
+
 export {
   selectHome,
   selectBetData,
+  selectDividends,
 };

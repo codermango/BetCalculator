@@ -208,11 +208,28 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
         </Table>
 
         <div className={styles.resultSection}>
-          <CellTextField cellResultChange={this.tableResultChange} index={0} defaultValue={data.resultData[0].toString()} width="100%" label="First horse number" />
-          <CellTextField cellResultChange={this.tableResultChange} index={1} defaultValue={data.resultData[1].toString()} width="100%" label="Second horse number" />
-          <CellTextField cellResultChange={this.tableResultChange} index={2} defaultValue={data.resultData[2].toString()} width="100%" label="Third horse number" />
+          <CellTextField
+            cellResultChange={this.tableResultChange}
+            index={0}
+            defaultValue={data.resultData[0].toString()}
+            width="100%"
+            label="First horse number"
+          />
+          <CellTextField
+            cellResultChange={this.tableResultChange}
+            index={1}
+            defaultValue={data.resultData[1].toString()}
+            width="100%"
+            label="Second horse number"
+          />
+          <CellTextField
+            cellResultChange={this.tableResultChange}
+            index={2}
+            defaultValue={data.resultData[2].toString()}
+            width="100%"
+            label="Third horse number"
+          />
         </div>
-
       </div>
     );
   }
