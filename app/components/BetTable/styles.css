@@ -10,3 +10,7 @@
   opacity: 1;
   transition: opacity 6000ms ease-in;
 }
+
+.resultSection {
+  display: flex;
+}

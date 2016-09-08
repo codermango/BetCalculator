@@ -29,6 +29,7 @@ const data = {
     { w: { horse: ['3'], amount: 63 }, p: { horse: ['3'], amount: 39 }, e: { horse: ['1', '3'], amount: 93 }, q: { horse: ['1', '3'], amount: 62 } },
     { w: { horse: ['4'], amount: 15 }, p: { horse: ['4'], amount: 105 }, e: { horse: ['3', '2'], amount: 51 }, q: { horse: ['2', '4'], amount: 25 } },
   ],
+  resultData: ['2', '3', '1'],
 };
 
 export function* getDefaultData() {

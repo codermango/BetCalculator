@@ -42,6 +42,8 @@ class CellTextField extends React.Component { // eslint-disable-line react/prefe
 
       if (this.props.hasOwnProperty('rowIndex')) {
         this.props.cellTextChange(value, this.props.rowIndex, this.props.betType, this.props.field);
+      } else if (this.props.hasOwnProperty('index')) {
+        this.props.cellResultChange(value, this.props.index);
       } else {
         this.props.cellCommissionChange(value, this.props.betType);
       }

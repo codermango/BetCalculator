@@ -17,6 +17,7 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
     super(props);
     this.tableTextChange = this.tableTextChange.bind(this);
     this.tableCommissionChange = this.tableCommissionChange.bind(this);
+    this.tableResultChange = this.tableResultChange.bind(this);
   }
 
   tableTextChange(data, rowIndex, betType, field) {
@@ -27,12 +28,14 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
     this.props.commissionChange(data, betType);
   }
 
+  tableResultChange(data, index) {
+    this.props.resultChange(data, index);
+  }
+
   render() {
     const { data } = this.props;
     return (
       <div className={styles.betTable}>
-
-
 
         <Table fixedHeader selectable={false}>
           <TableHeader
@@ -204,6 +207,11 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
           </TableBody>
         </Table>
 
+        <div className={styles.resultSection}>
+          <CellTextField cellResultChange={this.tableResultChange} index={0} defaultValue={data.resultData[0].toString()} width="100%" label="First horse number" />
+          <CellTextField cellResultChange={this.tableResultChange} index={1} defaultValue={data.resultData[1].toString()} width="100%" label="Second horse number" />
+          <CellTextField cellResultChange={this.tableResultChange} index={2} defaultValue={data.resultData[2].toString()} width="100%" label="Third horse number" />
+        </div>
 
       </div>
     );

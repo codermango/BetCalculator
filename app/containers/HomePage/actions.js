@@ -21,6 +21,8 @@ import {
   FETCH_DATA_ERROR,
   TEXT_CHANGE,
   COMMISSION_CHANGE,
+  CALCULATE_DIVIDENDS,
+  RESULT_CHANGE,
 } from './constants';
 
 /**
@@ -67,4 +69,19 @@ export function commissionChange(data, betType) {
     data,
     betType,
   };
+}
+
+export function resultChange(data, index) {
+  return {
+    type: RESULT_CHANGE,
+    data,
+    index,
+  };
+}
+
+export function calculateDividends() {
+  return {
+    type: CALCULATE_DIVIDENDS,
+  };
+
 }

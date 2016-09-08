@@ -11,10 +11,9 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { createStructuredSelector } from 'reselect';
 
 import BetTable from 'components/BetTable';
-import ResultSection from 'components/ResultSection';
 
 import styles from './styles.css';
-import { fetchData, textChange, commissionChange } from './actions';
+import { fetchData, textChange, commissionChange, resultChange, calculateDividends } from './actions';
 import { selectBetData } from './selectors';
 
 
@@ -24,6 +23,7 @@ export class HomePage extends React.Component {
     super(props);
     this.betTableTextChange = this.betTableTextChange.bind(this);
     this.betTableCommissionChange = this.betTableCommissionChange.bind(this);
+    this.betTableResultChange = this.betTableResultChange.bind(this);
   }
 
   componentDidMount() {
@@ -40,19 +40,13 @@ export class HomePage extends React.Component {
     this.props.commissionChange(data, betType);
   }
 
+  betTableResultChange(data, index) {
+    this.props.resultChange(data, index);
+  }
+
   render() {
     const { betData } = this.props;
     return (
-      <ReactCSSTransitionGroup
-        transitionName={{
-          appear: styles.appear,
-          appearActive: styles.appearActive,
-        }}
-        transitionAppear={true}
-        transitionEnterTimeout={6000}
-        transitionLeaveTimeout={6000}
-        transitionAppearTimeout={6000}
-      >
       <div className={styles.homePage}>
 
         <div className={styles.betTable}>
@@ -60,6 +54,7 @@ export class HomePage extends React.Component {
             <BetTable
               textChange={this.betTableTextChange}
               commissionChange={this.betTableCommissionChange}
+              resultChange={this.betTableResultChange}
               data={betData.get('data')}
             />
             :
@@ -67,14 +62,10 @@ export class HomePage extends React.Component {
           }
         </div>
 
-        <div className={styles.resultSection}>
-          <ResultSection />
-        </div>
         <div className={styles.button}>
-          <RaisedButton label="Calculate" />
+          <RaisedButton label="Calculate" onClick={this.props.calculateDividends} />
         </div>
       </div>
-      </ReactCSSTransitionGroup>
     );
   }
 }
@@ -92,6 +83,8 @@ function mapDispatchToProps(dispatch) {
     fetchBetData: () => dispatch(fetchData()),
     textChange: (data, rowIndex, betType, field) => dispatch(textChange(data, rowIndex, betType, field)),
     commissionChange: (data, betType) => dispatch(commissionChange(data, betType)),
+    resultChange: (data, index) => dispatch(resultChange(data, index)),
+    calculateDividends: () => dispatch(calculateDividends()),
     dispatch,
   };
 }

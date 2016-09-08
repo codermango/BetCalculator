@@ -16,8 +16,11 @@ import {
   FETCH_DATA_ERROR,
   TEXT_CHANGE,
   COMMISSION_CHANGE,
+  CALCULATE_DIVIDENDS,
+  RESULT_CHANGE,
 } from './constants';
 import { fromJS } from 'immutable';
+import { ruleCalculator } from './calculator';
 
 // The initial state of the App
 const initialState = fromJS({
@@ -25,6 +28,12 @@ const initialState = fromJS({
     loading: false,
     data: false,
     error: false,
+  }),
+  dividends: fromJS({
+    w: false,
+    p: false,
+    e: false,
+    q: false,
   }),
 });
 
@@ -60,6 +69,22 @@ function homeReducer(state = initialState, action) {
         .setIn(['betData', 'loading'], false)
         .update(['betData', 'data'], newState => newState)
         .setIn(['betData', 'error'], false);
+    }
+    case RESULT_CHANGE: {
+      let newState = Object.assign({}, state.get('betData').get('data'));
+      newState.resultData[action.index] = action.data;
+      return state
+        .setIn(['betData', 'loading'], false)
+        .update(['betData', 'data'], newState => newState)
+        .setIn(['betData', 'error'], false);
+    }
+    case CALCULATE_DIVIDENDS: {
+      const data = state.get('betData').get('data');
+      return state
+        .setIn(['dividends', 'w'], ruleCalculator(data.rowData, data.resultData, 'w', data.commission.w))
+        .setIn(['dividends', 'p'], ruleCalculator(data.rowData, data.resultData, 'p', data.commission.p))
+        .setIn(['dividends', 'e'], ruleCalculator(data.rowData, data.resultData, 'e', data.commission.e))
+        .setIn(['dividends', 'q'], ruleCalculator(data.rowData, data.resultData, 'q', data.commission.q));
     }
     default:
       return state;
