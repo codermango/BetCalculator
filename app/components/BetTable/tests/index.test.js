@@ -1,12 +1,9 @@
-/**
- * Gets the repositories of the user from Github
- */
+import BetTable from '../index';
 
-import { take, call, put, fork, cancel } from 'redux-saga/effects';
-import { LOCATION_CHANGE } from 'react-router-redux';
-import { FETCH_DATA } from 'containers/HomePage/constants';
-import { fetchDataSuccess } from 'containers/HomePage/actions';
-
+import expect from 'expect';
+import { render } from 'enzyme';
+import React from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const data = {
   commission: {
@@ -32,33 +29,14 @@ const data = {
   resultData: ['2', '3', '1'],
 };
 
-export function* getDefaultData() {
-  const resp = data;
-  yield put(fetchDataSuccess(resp));
-}
 
-/**
- * Watches for FETCH_DATA action and calls handler
- */
-export function* getBetDataWatcher() {
-  while (yield take(FETCH_DATA)) {
-    yield call(getDefaultData);
-  }
-}
-
-/**
- * Root saga manages watcher lifecycle
- */
-export function* betData() {
-  // Fork watcher so we can continue execution
-  const watcher = yield fork(getBetDataWatcher);
-
-  // Suspend execution until location changes
-  yield take(LOCATION_CHANGE);
-  yield cancel(watcher);
-}
-
-// Bootstrap sagas
-export default [
-  betData,
-];
+describe('<BetTable />', () => {
+  it('should render BetTable component', () => {
+    const renderedComponent = render(
+      <MuiThemeProvider>
+        <BetTable data={data} />
+      </MuiThemeProvider>
+    );
+    expect(renderedComponent.find(BetTable)).toExist();
+  });
+});

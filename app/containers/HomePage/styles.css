@@ -1,35 +1,47 @@
-.textSection {
-  margin: 3em auto;
+.homePage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  /* width: 80%; */
 }
 
-.textSection:first-child {
-  margin-top: 0;
+.betTable {
+  width: 80%;
+  box-shadow: 0 0 10px #888;
 }
 
-.centered {
-  text-align: center;
+.rowChangeButton {
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
 }
 
-p,
-label {
-  font-family: Georgia, Times, 'Times New Roman', serif;
-  line-height: 1.5em;
+.title {
+  text-transform: uppercase;
+  padding: 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
 }
 
-.link {
-  text-decoration: none;
+.resultSection {
+  display: flex;
+  width: 80%;
 }
 
-.usernameForm {
-  margin-bottom: 1em;
+.button {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
 }
 
-.input {
-  outline: none;
-  border-bottom: 1px dotted #999;
+.appear {
+  opacity: 0;
 }
 
-.atPrefix {
-  color: black;
-  margin-left: 0.4em;
+.appearActive {
+  opacity: 1;
+  transition: opacity 6000ms ease-in;
 }

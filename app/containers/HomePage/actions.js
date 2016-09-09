@@ -16,7 +16,13 @@
  */
 
 import {
-  CHANGE_USERNAME,
+  FETCH_DATA,
+  FETCH_DATA_SUCCESS,
+  FETCH_DATA_ERROR,
+  TEXT_CHANGE,
+  COMMISSION_CHANGE,
+  CALCULATE_DIVIDENDS,
+  RESULT_CHANGE,
 } from './constants';
 
 /**
@@ -26,9 +32,55 @@ import {
  *
  * @return {object}    An action object with a type of CHANGE_USERNAME
  */
-export function changeUsername(name) {
+
+export function fetchData() {
   return {
-    type: CHANGE_USERNAME,
-    name,
+    type: FETCH_DATA,
+  };
+}
+
+export function fetchDataSuccess(data) {
+  return {
+    type: FETCH_DATA_SUCCESS,
+    data,
+  };
+}
+
+export function fetchDataError(error) {
+  return {
+    type: FETCH_DATA_ERROR,
+    error,
+  };
+}
+
+export function textChange(data, rowIndex, betType, field) {
+  return {
+    type: TEXT_CHANGE,
+    data,
+    rowIndex,
+    betType,
+    field,
+  };
+}
+
+export function commissionChange(data, betType) {
+  return {
+    type: COMMISSION_CHANGE,
+    data,
+    betType,
+  };
+}
+
+export function resultChange(data, index) {
+  return {
+    type: RESULT_CHANGE,
+    data,
+    index,
+  };
+}
+
+export function calculateDividends() {
+  return {
+    type: CALCULATE_DIVIDENDS,
   };
 }
