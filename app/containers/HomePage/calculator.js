@@ -102,6 +102,22 @@ function ruleCalculator(parsedData, parsedResult, ruleType, commission) {
 }
 
 
+const calculation = (parsedData, parsedResult, commission, ruleCalculator) => {
+  const totalAmount = parsedData.reduce((x, y) => {
+    const amount = Number(y[ruleType].amount);
+    return x + amount;
+  }, 0);
+  const restAmount = totalAmount * (1 - Number(commission));
+
+  ruleCalculator
+
+}
+
+function calcWinDividend() {
+  
+}
+
+
 const calculator = (data, result, wCommission = 0.15, pCommission = 0.12, eCommission = 0.18, qCommission = 0.18) => {
   const parsedData = parseBets(data);
   const parsedResult = parseResult(result);
