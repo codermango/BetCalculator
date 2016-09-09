@@ -41,99 +41,87 @@ const parseBets = (betsList) => {
 
 const parseResult = (r) => (r.split(':').slice(1));
 
-function ruleCalculator(parsedData, parsedResult, ruleType, commission) {
-  const totalAmount = parsedData.reduce((x, y) => {
-    const amount = Number(y[ruleType].amount);
-    return x + amount;
-  }, 0);
-  const restAmount = totalAmount * (1 - Number(commission));
-
-  let dividend = null;
-
-  switch (ruleType) {
-    case 'w': {
-      let wAmount = 0;
-      for (const bet of parsedData) {
-        if (isHorseEqual(bet[ruleType].horse, parsedResult.slice(0, 1))) {
-          wAmount += Number(bet[ruleType].amount);
-        }
-      }
-      dividend = wAmount === 0 ? 0 : Number((restAmount / wAmount).toFixed(2));
-      break;
+/*
+ Now the rule calculation is seperate
+ you can define other rule calculation as well
+ */
+function calcWinDividend(parsedData, parsedResult, restAmount, ruleType) {
+  let amount = 0;
+  for (const bet of parsedData) {
+    if (isHorseEqual(bet[ruleType].horse, parsedResult.slice(0, 1))) {
+      amount += Number(bet[ruleType].amount);
     }
-    case 'p': {
-      const pAmount = [0, 0, 0];
-      for (const bet of parsedData) {
-        for (let i = 0; i < parsedResult.length; i++) {
-          if (isHorseEqual(bet[ruleType].horse, parsedResult.slice(i, i + 1))) {
-            pAmount[i] += Number(bet[ruleType].amount);
-          }
-        }
-      }
-      // console.log(restAmount);
-      dividend = pAmount.map(x => (x === 0 ? 0 : Number((restAmount / 3 / x)).toFixed(2)));
-      break;
-    }
-    case 'e': {
-      let eAmount = 0;
-      for (const bet of parsedData) {
-        if (isHorseEqual(bet[ruleType].horse, parsedResult.slice(0, 2))) {
-          eAmount += Number(bet[ruleType].amount);
-        }
-      }
-      dividend = eAmount === 0 ? 0 : Number((restAmount / eAmount).toFixed(2));
-      break;
-    }
-    case 'q': {
-      let qAmount = 0;
-      for (const bet of parsedData) {
-        if (isHorseEqual(bet[ruleType].horse, parsedResult.slice(0, 2))
-          || isHorseEqual(bet[ruleType].horse, parsedResult.slice(0, 2).reverse())) {
-          qAmount += Number(bet[ruleType].amount);
-        }
-      }
-      dividend = qAmount === 0 ? 0 : Number((restAmount / qAmount).toFixed(2));
-      break;
-    }
-    default:
-      dividend = false;
   }
+  const dividend = amount === 0 ? 0 : Number((restAmount / amount).toFixed(2));
   return dividend;
 }
 
+function calcPlaceDividend(parsedData, parsedResult, restAmount, ruleType) {
+  const amount = [0, 0, 0];
+  for (const bet of parsedData) {
+    for (let i = 0; i < parsedResult.length; i++) {
+      if (isHorseEqual(bet[ruleType].horse, parsedResult.slice(i, i + 1))) {
+        amount[i] += Number(bet[ruleType].amount);
+      }
+    }
+  }
+  const dividend = amount.map(x => (x === 0 ? 0 : Number((restAmount / 3 / x)).toFixed(2)));
+  return dividend;
+}
 
-const calculation = (parsedData, parsedResult, commission, ruleCalculator) => {
-  const totalAmount = parsedData.reduce((x, y) => {
-    const amount = Number(y[ruleType].amount);
-    return x + amount;
-  }, 0);
+function calcExactDividend(parsedData, parsedResult, restAmount, ruleType) {
+  let amount = 0;
+  for (const bet of parsedData) {
+    if (isHorseEqual(bet[ruleType].horse, parsedResult.slice(0, 2))) {
+      amount += Number(bet[ruleType].amount);
+    }
+  }
+  const dividend = amount === 0 ? 0 : Number((restAmount / amount).toFixed(2));
+  return dividend;
+}
+
+function calcQuinellaDividend(parsedData, parsedResult, restAmount, ruleType) {
+  let amount = 0;
+  for (const bet of parsedData) {
+    if (isHorseEqual(bet[ruleType].horse, parsedResult.slice(0, 2))
+      || isHorseEqual(bet[ruleType].horse, parsedResult.slice(0, 2).reverse())) {
+      amount += Number(bet[ruleType].amount);
+    }
+  }
+  const dividend = amount === 0 ? 0 : Number((restAmount / amount).toFixed(2));
+  return dividend;
+}
+
+function calculator(parsedData, parsedResult, commission, ruleType, ruleCalculator) {
+  const totalAmount = parsedData.reduce((x, y) => x + Number(y[ruleType].amount), 0);
   const restAmount = totalAmount * (1 - Number(commission));
-
-  ruleCalculator
-
+  const dividend = ruleCalculator(parsedData, parsedResult, restAmount, ruleType);
+  return dividend;
 }
 
-function calcWinDividend() {
-  
-}
+// const calculator = (data, result, wCommission = 0.15, pCommission = 0.12, eCommission = 0.18, qCommission = 0.18) => {
+//   const parsedData = parseBets(data);
+//   const parsedResult = parseResult(result);
+//
+//   const wDividend = calculation(parsedData, parsedResult, wCommission, 'w', calcWinDividend);
+//   const pDividend = calculation(parsedData, parsedResult, pCommission, 'p', calcPlaceDividend);
+//   const eDividend = calculation(parsedData, parsedResult, eCommission, 'e', calcExactDividend);
+//   const qDividend = calculation(parsedData, parsedResult, qCommission, 'q', calcQuinellaDividend);
+//
+//   console.log(wDividend);
+//   console.log(pDividend);
+//   console.log(eDividend);
+//   console.log(qDividend);
+//   console.log(parsedData);
+//   console.log(parsedResult);
+// };
 
+// calculator(betsData, betsResult);
 
-const calculator = (data, result, wCommission = 0.15, pCommission = 0.12, eCommission = 0.18, qCommission = 0.18) => {
-  const parsedData = parseBets(data);
-  const parsedResult = parseResult(result);
-  const wDividend = ruleCalculator(parsedData, parsedResult, 'w', wCommission);
-  const pDividend = ruleCalculator(parsedData, parsedResult, 'p', pCommission);
-  const eDividend = ruleCalculator(parsedData, parsedResult, 'e', eCommission);
-  const qDividend = ruleCalculator(parsedData, parsedResult, 'q', qCommission);
-  console.log(wDividend);
-  console.log(pDividend);
-  console.log(eDividend);
-  console.log(qDividend);
-  console.log(parsedData);
-  console.log(parsedResult);
+module.exports = {
+  calculator,
+  calcWinDividend,
+  calcPlaceDividend,
+  calcExactDividend,
+  calcQuinellaDividend,
 };
-
-calculator(betsData, betsResult);
-
-// exports.ruleCalculator = ruleCalculator;
-module.exports = { ruleCalculator };

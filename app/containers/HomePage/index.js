@@ -104,10 +104,7 @@ export class HomePage extends React.Component {
 }
 
 HomePage.propTypes = {
-  betData: React.PropTypes.oneOfType([
-    React.PropTypes.object,
-    React.PropTypes.bool,
-  ]),
+  betData: React.PropTypes.object,
   dividendsData: React.PropTypes.object,
   fetchBetData: React.PropTypes.func,
   textChange: React.PropTypes.func,
