@@ -38,6 +38,7 @@ const initialState = fromJS({
 });
 
 function homeReducer(state = initialState, action) {
+  const newState = Object.assign({}, state.get('betData').get('data'));
   switch (action.type) {
     case FETCH_DATA:
       return state
@@ -55,36 +56,32 @@ function homeReducer(state = initialState, action) {
         .setIn(['betData', 'error'], action.error);
 
     case TEXT_CHANGE: {
-      let newState = Object.assign({}, state.get('betData').get('data'));
       newState.rowData[action.rowIndex][action.betType][action.field] = action.data;
       return state
         .setIn(['betData', 'loading'], false)
-        .update(['betData', 'data'], newState => newState)
+        .update(['betData', 'data'], s => s)
         .setIn(['betData', 'error'], false);
     }
     case COMMISSION_CHANGE: {
-      let newState = Object.assign({}, state.get('betData').get('data'));
       newState.commission[action.betType] = action.data;
       return state
         .setIn(['betData', 'loading'], false)
-        .update(['betData', 'data'], newState => newState)
+        .update(['betData', 'data'], s => s)
         .setIn(['betData', 'error'], false);
     }
     case RESULT_CHANGE: {
-      let newState = Object.assign({}, state.get('betData').get('data'));
       newState.resultData[action.index] = action.data;
       return state
         .setIn(['betData', 'loading'], false)
-        .update(['betData', 'data'], newState => newState)
+        .update(['betData', 'data'], s => s)
         .setIn(['betData', 'error'], false);
     }
     case CALCULATE_DIVIDENDS: {
-      const data = state.get('betData').get('data');
       return state
-        .setIn(['dividends', 'w'], ruleCalculator(data.rowData, data.resultData, 'w', data.commission.w))
-        .setIn(['dividends', 'p'], ruleCalculator(data.rowData, data.resultData, 'p', data.commission.p))
-        .setIn(['dividends', 'e'], ruleCalculator(data.rowData, data.resultData, 'e', data.commission.e))
-        .setIn(['dividends', 'q'], ruleCalculator(data.rowData, data.resultData, 'q', data.commission.q));
+        .setIn(['dividends', 'w'], ruleCalculator(newState.rowData, newState.resultData, 'w', newState.commission.w))
+        .setIn(['dividends', 'p'], ruleCalculator(newState.rowData, newState.resultData, 'p', newState.commission.p))
+        .setIn(['dividends', 'e'], ruleCalculator(newState.rowData, newState.resultData, 'e', newState.commission.e))
+        .setIn(['dividends', 'q'], ruleCalculator(newState.rowData, newState.resultData, 'q', newState.commission.q));
     }
     default:
       return state;

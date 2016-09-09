@@ -83,5 +83,4 @@ export function calculateDividends() {
   return {
     type: CALCULATE_DIVIDENDS,
   };
-
 }
