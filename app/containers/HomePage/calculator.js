@@ -42,12 +42,11 @@ const parseBets = (betsList) => {
 const parseResult = (r) => (r.split(':').slice(1));
 
 function ruleCalculator(parsedData, parsedResult, ruleType, commission) {
-  commission = Number(commission);
   const totalAmount = parsedData.reduce((x, y) => {
     const amount = Number(y[ruleType].amount);
     return x + amount;
   }, 0);
-  const restAmount = totalAmount * (1 - commission);
+  const restAmount = totalAmount * (1 - Number(commission));
 
   let dividend = null;
 
@@ -72,7 +71,7 @@ function ruleCalculator(parsedData, parsedResult, ruleType, commission) {
         }
       }
       // console.log(restAmount);
-      dividend = pAmount.map(x => x === 0 ? 0 : Number((restAmount / 3 / x).toFixed(2)));
+      dividend = pAmount.map(x => (x === 0 ? 0 : Number((restAmount / 3 / x)).toFixed(2)));
       break;
     }
     case 'e': {
@@ -103,6 +102,22 @@ function ruleCalculator(parsedData, parsedResult, ruleType, commission) {
 }
 
 
+const calculation = (parsedData, parsedResult, commission, ruleCalculator) => {
+  const totalAmount = parsedData.reduce((x, y) => {
+    const amount = Number(y[ruleType].amount);
+    return x + amount;
+  }, 0);
+  const restAmount = totalAmount * (1 - Number(commission));
+
+  ruleCalculator
+
+}
+
+function calcWinDividend() {
+  
+}
+
+
 const calculator = (data, result, wCommission = 0.15, pCommission = 0.12, eCommission = 0.18, qCommission = 0.18) => {
   const parsedData = parseBets(data);
   const parsedResult = parseResult(result);
@@ -110,16 +125,15 @@ const calculator = (data, result, wCommission = 0.15, pCommission = 0.12, eCommi
   const pDividend = ruleCalculator(parsedData, parsedResult, 'p', pCommission);
   const eDividend = ruleCalculator(parsedData, parsedResult, 'e', eCommission);
   const qDividend = ruleCalculator(parsedData, parsedResult, 'q', qCommission);
-  // console.log(wDividend);
-  // console.log(pDividend);
-  // console.log(eDividend);
-  // console.log(qDividend);
-  // console.log(parsedData);
-  // console.log(parsedResult);
+  console.log(wDividend);
+  console.log(pDividend);
+  console.log(eDividend);
+  console.log(qDividend);
+  console.log(parsedData);
+  console.log(parsedResult);
 };
 
-
-// calculator(betsData, betsResult);
+calculator(betsData, betsResult);
 
 // exports.ruleCalculator = ruleCalculator;
 module.exports = { ruleCalculator };

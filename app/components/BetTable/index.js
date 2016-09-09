@@ -6,7 +6,6 @@
 
 import React from 'react';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import CellTextField from 'components/CellTextField';
 
 import styles from './styles.css';
@@ -58,7 +57,7 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
               <TableHeaderColumn>
                 <CellTextField
                   cellCommissionChange={this.tableCommissionChange}
-                  betType='w'
+                  betType="w"
                   defaultValue={data.commission.w.toString()}
                   width="100%"
                   label="WIN Commission Rate"
@@ -67,7 +66,7 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
               <TableHeaderColumn>
                 <CellTextField
                   cellCommissionChange={this.tableCommissionChange}
-                  betType='p'
+                  betType="p"
                   defaultValue={data.commission.p.toString()}
                   width="100%"
                   label="PLACE Commission Rate"
@@ -76,7 +75,7 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
               <TableHeaderColumn>
                 <CellTextField
                   cellCommissionChange={this.tableCommissionChange}
-                  betType='e'
+                  betType="e"
                   defaultValue={data.commission.e.toString()}
                   width="100%"
                   label="EXACT Commission Rate"
@@ -85,7 +84,7 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
               <TableHeaderColumn>
                 <CellTextField
                   cellCommissionChange={this.tableCommissionChange}
-                  betType='q'
+                  betType="q"
                   defaultValue={data.commission.q.toString()}
                   width="100%"
                   label="QUINELLA Commission Rate"
@@ -237,6 +236,9 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
 
 BetTable.propTypes = {
   data: React.PropTypes.object,
+  textChange: React.PropTypes.func,
+  commissionChange: React.PropTypes.func,
+  resultChange: React.PropTypes.func,
 };
 
 export default BetTable;

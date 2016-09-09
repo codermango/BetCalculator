@@ -6,8 +6,8 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import RaisedButton from 'material-ui/RaisedButton';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { RaisedButton, Dialog } from 'material-ui';
+// import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { createStructuredSelector } from 'reselect';
 
 import BetTable from 'components/BetTable';
@@ -21,10 +21,14 @@ export class HomePage extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      showResult: false,
+    };
     this.betTableTextChange = this.betTableTextChange.bind(this);
     this.betTableCommissionChange = this.betTableCommissionChange.bind(this);
     this.betTableResultChange = this.betTableResultChange.bind(this);
     this.buttonClick = this.buttonClick.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   componentDidMount() {
@@ -46,7 +50,12 @@ export class HomePage extends React.Component {
   }
 
   buttonClick() {
+    this.setState({ showResult: true });
     this.props.calculateDividends();
+  }
+
+  handleClose() {
+    this.setState({ showResult: false });
   }
 
   render() {
@@ -72,17 +81,23 @@ export class HomePage extends React.Component {
         </div>
 
         {betData.get('data') ?
-          <div className={styles.resultPanel}>
+          <Dialog
+            title="Dividends"
+            modal={false}
+            open={this.state.showResult}
+            onRequestClose={this.handleClose}
+          >
             <div>Win - Runner{betData.get('data').resultData[0]} - ${dividendsData.get('w')}</div>
             <div>Place - Runner{betData.get('data').resultData[0]} - ${dividendsData.get('p') ? dividendsData.get('p')[0] : ''}</div>
             <div>Place - Runner{betData.get('data').resultData[1]} - ${dividendsData.get('p') ? dividendsData.get('p')[1] : ''}</div>
             <div>Place - Runner{betData.get('data').resultData[2]} - ${dividendsData.get('p') ? dividendsData.get('p')[2] : ''}</div>
             <div>Exact - Runner{betData.get('data').resultData[0]},{betData.get('data').resultData[1]} - ${dividendsData.get('e')}</div>
             <div>Quinella - Runner{betData.get('data').resultData[0]},{betData.get('data').resultData[1]} - ${dividendsData.get('q')}</div>
-          </div>
+          </Dialog>
           :
           ''
         }
+
       </div>
     );
   }
@@ -93,7 +108,12 @@ HomePage.propTypes = {
     React.PropTypes.object,
     React.PropTypes.bool,
   ]),
+  dividendsData: React.PropTypes.object,
   fetchBetData: React.PropTypes.func,
+  textChange: React.PropTypes.func,
+  commissionChange: React.PropTypes.func,
+  resultChange: React.PropTypes.func,
+  calculateDividends: React.PropTypes.func,
 };
 
 function mapDispatchToProps(dispatch) {
