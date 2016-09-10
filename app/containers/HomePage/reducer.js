@@ -19,6 +19,7 @@ import {
   COMMISSION_CHANGE,
   CALCULATE_DIVIDENDS,
   RESULT_CHANGE,
+  ADD_ROW,
 } from './constants';
 import { fromJS } from 'immutable';
 import {
@@ -73,8 +74,7 @@ function homeReducer(state = initialState, action) {
       return state
         .setIn(['betData', 'loading'], false)
         .update(['betData', 'data'], s => s)
-        .setIn(['betData', 'error'], false)
-        .setIn(['isInputValid', 'data'], isValid);
+        .setIn(['betData', 'error'], false);
     }
     case HORSE_CHANGE: {
       let isValid = true;
@@ -85,8 +85,7 @@ function homeReducer(state = initialState, action) {
       return state
         .setIn(['betData', 'loading'], false)
         .update(['betData', 'data'], s => s)
-        .setIn(['betData', 'error'], false)
-        .setIn(['isInputValid', 'data'], isValid);
+        .setIn(['betData', 'error'], false);
     }
     case COMMISSION_CHANGE: {
       let isValid = true;
@@ -97,22 +96,47 @@ function homeReducer(state = initialState, action) {
       return state
         .setIn(['betData', 'loading'], false)
         .update(['betData', 'data'], s => s)
-        .setIn(['betData', 'error'], false)
-        .setIn(['isInputValid', 'data'], isValid);
+        .setIn(['betData', 'error'], false);
     }
     case RESULT_CHANGE: {
       newState.resultData[action.index] = action.data;
       return state
         .setIn(['betData', 'loading'], false)
-        .update(['betData', 'data'], s => s)
+        .setIn(['betData', 'data'], newState)
         .setIn(['betData', 'error'], false);
     }
     case CALCULATE_DIVIDENDS: {
+      for (const bet of newState.rowData) {
+        for (const rule in bet) {
+          if (Number.isNaN(Number(bet[rule].amount))
+            || bet[rule].amount === ''
+            || bet[rule].horse.includes('')
+          ) {
+            return state
+              .setIn(['isInputValid', 'data'], false);
+          }
+        }
+      }
       return state
         .setIn(['dividends', 'w'], calcWinDividend(newState.rowData, newState.resultData, newState.commission.w, 'w'))
         .setIn(['dividends', 'p'], calcPlaceDividend(newState.rowData, newState.resultData, newState.commission.p, 'p'))
         .setIn(['dividends', 'e'], calcExactDividend(newState.rowData, newState.resultData, newState.commission.e, 'e'))
-        .setIn(['dividends', 'q'], calcQuinellaDividend(newState.rowData, newState.resultData, newState.commission.q, 'q'));
+        .setIn(['dividends', 'q'], calcQuinellaDividend(newState.rowData, newState.resultData, newState.commission.q, 'q'))
+        .setIn(['isInputValid', 'data'], true);
+    }
+    case ADD_ROW: {
+      const newRow = {
+        w: { horse: [''], amount: '' },
+        p: { horse: [''], amount: '' },
+        e: { horse: ['', ''], amount: '' },
+        q: { horse: ['', ''], amount: '' }
+      };
+      newState.rowData.push(newRow);
+      return state
+        .setIn(['betData', 'loading'], false)
+        .setIn(['betData', 'data'], newState)
+        .setIn(['betData', 'error'], false)
+        .setIn(['isInputValid', 'data'], false);
     }
     default:
       return state;

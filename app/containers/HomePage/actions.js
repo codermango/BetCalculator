@@ -24,15 +24,9 @@ import {
   COMMISSION_CHANGE,
   CALCULATE_DIVIDENDS,
   RESULT_CHANGE,
+  ADD_ROW,
 } from './constants';
 
-/**
- * Changes the input field of the form
- *
- * @param  {name} name The new text of the input field
- *
- * @return {object}    An action object with a type of CHANGE_USERNAME
- */
 
 export function fetchData() {
   return {
@@ -92,5 +86,11 @@ export function resultChange(data, index) {
 export function calculateDividends() {
   return {
     type: CALCULATE_DIVIDENDS,
+  };
+}
+
+export function addRow() {
+  return {
+    type: ADD_ROW,
   };
 }

@@ -22,6 +22,7 @@ import {
   commissionChange,
   resultChange,
   calculateDividends,
+  addRow,
 } from './actions';
 import {
   selectBetData,
@@ -36,7 +37,6 @@ export class HomePage extends React.Component {
     super(props);
     this.state = {
       showResult: false,
-      inputError: false,
     };
     this.betTableAmountChange = this.betTableAmountChange.bind(this);
     this.betTableHorseChange = this.betTableHorseChange.bind(this);
@@ -44,6 +44,7 @@ export class HomePage extends React.Component {
     this.betTableResultChange = this.betTableResultChange.bind(this);
     this.calculateClick = this.calculateClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.addButtonClick = this.addButtonClick.bind(this);
   }
 
   componentDidMount() {
@@ -69,12 +70,7 @@ export class HomePage extends React.Component {
   }
 
   calculateClick() {
-    if (this.props.isInputValid.get('data')) {
-      this.props.calculateDividends();
-      this.setState({ inputError: false });
-    } else {
-      this.setState({ inputError: true });
-    }
+    this.props.calculateDividends();
     this.setState({ showResult: true });
   }
 
@@ -82,14 +78,18 @@ export class HomePage extends React.Component {
     this.setState({ showResult: false });
   }
 
+  addButtonClick() {
+    this.props.addRow();
+  }
+
   render() {
     const { betData, dividendsData } = this.props;
     let showMsg = '';
-    if (this.state.inputError) {
+    if (!this.props.isInputValid.get('data')) {
       showMsg = (
         <div>There is something wrong with input, please check!</div>
       );
-    } else if (this.state.showResult) {
+    } else if (betData.get('data')) {
       showMsg = (
         <div>
           <div>Win - Runner{betData.get('data').resultData[0]} - ${dividendsData.get('w')}</div>
@@ -121,7 +121,7 @@ export class HomePage extends React.Component {
 
         <div className={styles.button}>
           <div className={styles.buttonSection}>
-            <FloatingActionButton>
+            <FloatingActionButton onClick={this.addButtonClick}>
               <ContentAdd />
             </FloatingActionButton>
             <FloatingActionButton>
@@ -161,6 +161,7 @@ HomePage.propTypes = {
   commissionChange: React.PropTypes.func,
   resultChange: React.PropTypes.func,
   calculateDividends: React.PropTypes.func,
+  addRow: React.PropTypes.func,
 };
 
 function mapDispatchToProps(dispatch) {
@@ -171,6 +172,7 @@ function mapDispatchToProps(dispatch) {
     commissionChange: (data, betType) => dispatch(commissionChange(data, betType)),
     resultChange: (data, index) => dispatch(resultChange(data, index)),
     calculateDividends: () => dispatch(calculateDividends()),
+    addRow: () => dispatch(addRow()),
     dispatch,
   };
 }
