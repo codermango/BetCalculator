@@ -36,7 +36,7 @@ class CellTextField extends React.Component { // eslint-disable-line react/prefe
     if ({}.hasOwnProperty.call(this.props, 'cellAmountChange')) {
       this.props.cellAmountChange(input, this.props.rowIndex, this.props.betType);
     } else if ({}.hasOwnProperty.call(this.props, 'cellHorseChange')) {
-      this.props.cellHorseChange(input, this.props.rowIndex, this.props.betType, this.props.horseIndex)
+      this.props.cellHorseChange(input, this.props.rowIndex, this.props.betType, this.props.horseIndex);
     } else if ({}.hasOwnProperty.call(this.props, 'cellResultChange')) {
       this.props.cellResultChange(input, this.props.index);
     } else if ({}.hasOwnProperty.call(this.props, 'cellCommissionChange')) {

@@ -67,10 +67,6 @@ function homeReducer(state = initialState, action) {
         .setIn(['betData', 'error'], action.error);
 
     case AMOUNT_CHANGE: {
-      let isValid = true;
-      if (Number.isNaN(Number(action.data)) || (action.data.trim() === '')) {
-        isValid = false;
-      }
       newState.rowData[action.rowIndex][action.betType].amount = action.data;
       return state
         .setIn(['betData', 'loading'], false)
@@ -78,10 +74,6 @@ function homeReducer(state = initialState, action) {
         .setIn(['betData', 'error'], false);
     }
     case HORSE_CHANGE: {
-      let isValid = true;
-      if (Number.isNaN(Number(action.data)) || (action.data.trim() === '')) {
-        isValid = false;
-      }
       newState.rowData[action.rowIndex][action.betType].horse[action.horseIndex] = action.data;
       return state
         .setIn(['betData', 'loading'], false)
@@ -89,10 +81,6 @@ function homeReducer(state = initialState, action) {
         .setIn(['betData', 'error'], false);
     }
     case COMMISSION_CHANGE: {
-      let isValid = true;
-      if (Number.isNaN(Number(action.data)) || (action.data.trim() === '')) {
-        isValid = false;
-      }
       newState.commission[action.betType] = action.data;
       return state
         .setIn(['betData', 'loading'], false)
@@ -130,7 +118,7 @@ function homeReducer(state = initialState, action) {
         w: { horse: [''], amount: '' },
         p: { horse: [''], amount: '' },
         e: { horse: ['', ''], amount: '' },
-        q: { horse: ['', ''], amount: '' }
+        q: { horse: ['', ''], amount: '' },
       };
       newState.rowData.push(newRow);
       return state
