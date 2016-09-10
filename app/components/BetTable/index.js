@@ -14,13 +14,18 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
 
   constructor(props) {
     super(props);
-    this.tableTextChange = this.tableTextChange.bind(this);
+    this.tableAmountChange = this.tableAmountChange.bind(this);
     this.tableCommissionChange = this.tableCommissionChange.bind(this);
     this.tableResultChange = this.tableResultChange.bind(this);
+    this.tableHorseChange = this.tableHorseChange.bind(this);
   }
 
-  tableTextChange(data, rowIndex, betType, field) {
-    this.props.textChange(data, rowIndex, betType, field);
+  tableAmountChange(data, rowIndex, betType) {
+    this.props.amountChange(data, rowIndex, betType);
+  }
+
+  tableHorseChange(data, rowIndex, betType, horseIndex) {
+    this.props.horseChange(data, rowIndex, betType, horseIndex);
   }
 
   tableCommissionChange(data, betType) {
@@ -103,18 +108,17 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
                 <TableRow key={index}>
                   <TableRowColumn>
                     <CellTextField
-                      cellTextChange={this.tableTextChange}
+                      cellHorseChange={this.tableHorseChange}
                       rowIndex={index}
                       betType="w"
-                      field="horse"
+                      horseIndex={0}
                       defaultValue={item.w.horse[0]}
                       width="50%"
                       label="Horse Num"
                     />
                     <CellTextField
-                      cellTextChange={this.tableTextChange}
+                      cellAmountChange={this.tableAmountChange}
                       rowIndex={index} betType="w"
-                      field="amount"
                       defaultValue={item.w.amount.toString()}
                       width="50%"
                       label="Amount"
@@ -122,19 +126,18 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
                   </TableRowColumn>
                   <TableRowColumn>
                     <CellTextField
-                      cellTextChange={this.tableTextChange}
+                      cellHorseChange={this.tableHorseChange}
                       rowIndex={index}
                       betType="p"
-                      field="horse"
+                      horseIndex={0}
                       defaultValue={item.p.horse[0]}
                       width="50%"
                       label="Horse Num"
                     />
                     <CellTextField
-                      cellTextChange={this.tableTextChange}
+                      cellAmountChange={this.tableAmountChange}
                       rowIndex={index}
                       betType="p"
-                      field="amount"
                       defaultValue={item.p.amount.toString()}
                       width="50%"
                       label="Amount"
@@ -142,28 +145,27 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
                   </TableRowColumn>
                   <TableRowColumn>
                     <CellTextField
-                      cellTextChange={this.tableTextChange}
+                      cellHorseChange={this.tableHorseChange}
                       rowIndex={index}
                       betType="e"
-                      field="horse"
+                      horseIndex={0}
                       defaultValue={item.e.horse[0]}
                       width="33%"
                       label="Horse Num"
                     />
                     <CellTextField
-                      cellTextChange={this.tableTextChange}
+                      cellHorseChange={this.tableHorseChange}
                       rowIndex={index}
                       betType="e"
-                      field="horse"
+                      horseIndex={1}
                       defaultValue={item.e.horse[1]}
                       width="33%"
                       label="Horse Num"
                     />
                     <CellTextField
-                      cellTextChange={this.tableTextChange}
+                      cellAmountChange={this.tableAmountChange}
                       rowIndex={index}
                       betType="e"
-                      field="amount"
                       defaultValue={item.e.amount.toString()}
                       width="33%"
                       label="Amount"
@@ -171,28 +173,27 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
                   </TableRowColumn>
                   <TableRowColumn>
                     <CellTextField
-                      cellTextChange={this.tableTextChange}
+                      cellHorseChange={this.tableHorseChange}
                       rowIndex={index}
                       betType="q"
-                      field="horse"
+                      horseIndex={0}
                       defaultValue={item.q.horse[0]}
                       width="33%"
                       label="Horse Num"
                     />
                     <CellTextField
-                      cellTextChange={this.tableTextChange}
+                      cellHorseChange={this.tableHorseChange}
                       rowIndex={index}
                       betType="q"
-                      field="horse"
+                      horseIndex={1}
                       defaultValue={item.q.horse[1]}
                       width="33%"
                       label="Horse Num"
                     />
                     <CellTextField
-                      cellTextChange={this.tableTextChange}
+                      cellAmountChange={this.tableAmountChange}
                       rowIndex={index}
                       betType="q"
-                      field="amount"
                       defaultValue={item.q.amount.toString()}
                       width="33%"
                       label="Amount"
@@ -236,7 +237,8 @@ class BetTable extends React.Component { // eslint-disable-line react/prefer-sta
 
 BetTable.propTypes = {
   data: React.PropTypes.object,
-  textChange: React.PropTypes.func,
+  amountChange: React.PropTypes.func,
+  horseChange: React.PropTypes.func,
   commissionChange: React.PropTypes.func,
   resultChange: React.PropTypes.func,
 };

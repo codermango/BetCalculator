@@ -14,7 +14,8 @@ import {
   FETCH_DATA,
   FETCH_DATA_SUCCESS,
   FETCH_DATA_ERROR,
-  TEXT_CHANGE,
+  AMOUNT_CHANGE,
+  HORSE_CHANGE,
   COMMISSION_CHANGE,
   CALCULATE_DIVIDENDS,
   RESULT_CHANGE,
@@ -63,12 +64,24 @@ function homeReducer(state = initialState, action) {
         .setIn(['betData', 'data'], false)
         .setIn(['betData', 'error'], action.error);
 
-    case TEXT_CHANGE: {
+    case AMOUNT_CHANGE: {
       let isValid = true;
       if (Number.isNaN(Number(action.data)) || (action.data.trim() === '')) {
         isValid = false;
       }
-      newState.rowData[action.rowIndex][action.betType][action.field] = action.data;
+      newState.rowData[action.rowIndex][action.betType].amount = action.data;
+      return state
+        .setIn(['betData', 'loading'], false)
+        .update(['betData', 'data'], s => s)
+        .setIn(['betData', 'error'], false)
+        .setIn(['isInputValid', 'data'], isValid);
+    }
+    case HORSE_CHANGE: {
+      let isValid = true;
+      if (Number.isNaN(Number(action.data)) || (action.data.trim() === '')) {
+        isValid = false;
+      }
+      newState.rowData[action.rowIndex][action.betType].horse[action.horseIndex] = action.data;
       return state
         .setIn(['betData', 'loading'], false)
         .update(['betData', 'data'], s => s)

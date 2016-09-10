@@ -33,15 +33,15 @@ class CellTextField extends React.Component { // eslint-disable-line react/prefe
         floatingLabelFocusColor: 'rgb(0, 188, 212)',
       });
     }
-
-    if ({}.hasOwnProperty.call(this.props, 'rowIndex')) {
-      this.props.cellTextChange(input, this.props.rowIndex, this.props.betType, this.props.field);
-    } else if ({}.hasOwnProperty.call(this.props, 'index')) {
+    if ({}.hasOwnProperty.call(this.props, 'cellAmountChange')) {
+      this.props.cellAmountChange(input, this.props.rowIndex, this.props.betType);
+    } else if ({}.hasOwnProperty.call(this.props, 'cellHorseChange')) {
+      this.props.cellHorseChange(input, this.props.rowIndex, this.props.betType, this.props.horseIndex)
+    } else if ({}.hasOwnProperty.call(this.props, 'cellResultChange')) {
       this.props.cellResultChange(input, this.props.index);
-    } else {
+    } else if ({}.hasOwnProperty.call(this.props, 'cellCommissionChange')) {
       this.props.cellCommissionChange(input, this.props.betType);
     }
-    // console.log(this.props.cellTextChange(value));
   }
 
   render() {
@@ -75,9 +75,11 @@ CellTextField.propTypes = {
   defaultValue: React.PropTypes.string,
   rowIndex: React.PropTypes.number,
   index: React.PropTypes.number,
+  horseIndex: React.PropTypes.number,
   betType: React.PropTypes.string,
   field: React.PropTypes.string,
-  cellTextChange: React.PropTypes.func,
+  cellAmountChange: React.PropTypes.func,
+  cellHorseChange: React.PropTypes.func,
   cellResultChange: React.PropTypes.func,
   cellCommissionChange: React.PropTypes.func,
 };

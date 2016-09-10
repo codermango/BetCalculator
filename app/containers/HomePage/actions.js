@@ -19,7 +19,8 @@ import {
   FETCH_DATA,
   FETCH_DATA_SUCCESS,
   FETCH_DATA_ERROR,
-  TEXT_CHANGE,
+  AMOUNT_CHANGE,
+  HORSE_CHANGE,
   COMMISSION_CHANGE,
   CALCULATE_DIVIDENDS,
   RESULT_CHANGE,
@@ -53,13 +54,22 @@ export function fetchDataError(error) {
   };
 }
 
-export function textChange(data, rowIndex, betType, field) {
+export function amountChange(data, rowIndex, betType) {
   return {
-    type: TEXT_CHANGE,
+    type: AMOUNT_CHANGE,
     data,
     rowIndex,
     betType,
-    field,
+  };
+}
+
+export function horseChange(data, rowIndex, betType, horseIndex) {
+  return {
+    type: HORSE_CHANGE,
+    data,
+    rowIndex,
+    betType,
+    horseIndex,
   };
 }
 

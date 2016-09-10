@@ -17,7 +17,8 @@ import BetTable from 'components/BetTable';
 import styles from './styles.css';
 import {
   fetchData,
-  textChange,
+  amountChange,
+  horseChange,
   commissionChange,
   resultChange,
   calculateDividends,
@@ -37,10 +38,11 @@ export class HomePage extends React.Component {
       showResult: false,
       inputError: false,
     };
-    this.betTableTextChange = this.betTableTextChange.bind(this);
+    this.betTableAmountChange = this.betTableAmountChange.bind(this);
+    this.betTableHorseChange = this.betTableHorseChange.bind(this);
     this.betTableCommissionChange = this.betTableCommissionChange.bind(this);
     this.betTableResultChange = this.betTableResultChange.bind(this);
-    this.buttonClick = this.buttonClick.bind(this);
+    this.calculateClick = this.calculateClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
   }
 
@@ -50,8 +52,12 @@ export class HomePage extends React.Component {
     }
   }
 
-  betTableTextChange(data, rowIndex, betType, field) {
-    this.props.textChange(data, rowIndex, betType, field);
+  betTableAmountChange(data, rowIndex, betType) {
+    this.props.amountChange(data, rowIndex, betType);
+  }
+
+  betTableHorseChange(data, rowIndex, betType, horseIndex) {
+    this.props.horseChange(data, rowIndex, betType, horseIndex);
   }
 
   betTableCommissionChange(data, betType) {
@@ -62,7 +68,7 @@ export class HomePage extends React.Component {
     this.props.resultChange(data, index);
   }
 
-  buttonClick() {
+  calculateClick() {
     if (this.props.isInputValid.get('data')) {
       this.props.calculateDividends();
       this.setState({ inputError: false });
@@ -102,7 +108,8 @@ export class HomePage extends React.Component {
         <div className={styles.betTable}>
           {betData.get('data') ?
             <BetTable
-              textChange={this.betTableTextChange}
+              amountChange={this.betTableAmountChange}
+              horseChange={this.betTableHorseChange}
               commissionChange={this.betTableCommissionChange}
               resultChange={this.betTableResultChange}
               data={betData.get('data')}
@@ -122,7 +129,7 @@ export class HomePage extends React.Component {
             </FloatingActionButton>
           </div>
           <div>
-            <RaisedButton label="Calculate" onClick={this.buttonClick} />
+            <RaisedButton label="Calculate" onClick={this.calculateClick} />
           </div>
         </div>
 
@@ -149,7 +156,8 @@ HomePage.propTypes = {
   dividendsData: React.PropTypes.object,
   isInputValid: React.PropTypes.object,
   fetchBetData: React.PropTypes.func,
-  textChange: React.PropTypes.func,
+  amountChange: React.PropTypes.func,
+  horseChange: React.PropTypes.func,
   commissionChange: React.PropTypes.func,
   resultChange: React.PropTypes.func,
   calculateDividends: React.PropTypes.func,
@@ -158,7 +166,8 @@ HomePage.propTypes = {
 function mapDispatchToProps(dispatch) {
   return {
     fetchBetData: () => dispatch(fetchData()),
-    textChange: (data, rowIndex, betType, field) => dispatch(textChange(data, rowIndex, betType, field)),
+    amountChange: (data, rowIndex, betType) => dispatch(amountChange(data, rowIndex, betType)),
+    horseChange: (data, rowIndex, betType, horseIndex) => dispatch(horseChange(data, rowIndex, betType, horseIndex)),
     commissionChange: (data, betType) => dispatch(commissionChange(data, betType)),
     resultChange: (data, index) => dispatch(resultChange(data, index)),
     calculateDividends: () => dispatch(calculateDividends()),
