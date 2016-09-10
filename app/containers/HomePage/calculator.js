@@ -41,11 +41,17 @@ const parseBets = (betsList) => {
 
 const parseResult = (r) => (r.split(':').slice(1));
 
+const amountAfterCommission = (parsedData, commission, ruleType) => {
+  const totalAmount = parsedData.reduce((x, y) => x + Number(y[ruleType].amount), 0);
+  return totalAmount * (1 - Number(commission));
+};
+
 /*
  Now the rule calculation is seperate
  you can define other rule calculation as well
  */
-function calcWinDividend(parsedData, parsedResult, restAmount, ruleType) {
+function calcWinDividend(parsedData, parsedResult, commission, ruleType) {
+  const restAmount = amountAfterCommission(parsedData, commission, ruleType);
   let amount = 0;
   for (const bet of parsedData) {
     if (isHorseEqual(bet[ruleType].horse, parsedResult.slice(0, 1))) {
@@ -56,7 +62,8 @@ function calcWinDividend(parsedData, parsedResult, restAmount, ruleType) {
   return dividend;
 }
 
-function calcPlaceDividend(parsedData, parsedResult, restAmount, ruleType) {
+function calcPlaceDividend(parsedData, parsedResult, commission, ruleType) {
+  const restAmount = amountAfterCommission(parsedData, commission, ruleType);
   const amount = [0, 0, 0];
   for (const bet of parsedData) {
     for (let i = 0; i < parsedResult.length; i++) {
@@ -69,7 +76,8 @@ function calcPlaceDividend(parsedData, parsedResult, restAmount, ruleType) {
   return dividend;
 }
 
-function calcExactDividend(parsedData, parsedResult, restAmount, ruleType) {
+function calcExactDividend(parsedData, parsedResult, commission, ruleType) {
+  const restAmount = amountAfterCommission(parsedData, commission, ruleType);
   let amount = 0;
   for (const bet of parsedData) {
     if (isHorseEqual(bet[ruleType].horse, parsedResult.slice(0, 2))) {
@@ -80,7 +88,8 @@ function calcExactDividend(parsedData, parsedResult, restAmount, ruleType) {
   return dividend;
 }
 
-function calcQuinellaDividend(parsedData, parsedResult, restAmount, ruleType) {
+function calcQuinellaDividend(parsedData, parsedResult, commission, ruleType) {
+  const restAmount = amountAfterCommission(parsedData, commission, ruleType);
   let amount = 0;
   for (const bet of parsedData) {
     if (isHorseEqual(bet[ruleType].horse, parsedResult.slice(0, 2))
@@ -89,13 +98,6 @@ function calcQuinellaDividend(parsedData, parsedResult, restAmount, ruleType) {
     }
   }
   const dividend = amount === 0 ? 0 : Number((restAmount / amount).toFixed(2));
-  return dividend;
-}
-
-function calculator(parsedData, parsedResult, commission, ruleType, ruleCalculator) {
-  const totalAmount = parsedData.reduce((x, y) => x + Number(y[ruleType].amount), 0);
-  const restAmount = totalAmount * (1 - Number(commission));
-  const dividend = ruleCalculator(parsedData, parsedResult, restAmount, ruleType);
   return dividend;
 }
 
@@ -119,7 +121,6 @@ function calculator(parsedData, parsedResult, commission, ruleType, ruleCalculat
 // calculator(betsData, betsResult);
 
 module.exports = {
-  calculator,
   calcWinDividend,
   calcPlaceDividend,
   calcExactDividend,

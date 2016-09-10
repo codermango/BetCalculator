@@ -21,7 +21,6 @@ import {
 } from './constants';
 import { fromJS } from 'immutable';
 import {
-  calculator,
   calcWinDividend,
   calcPlaceDividend,
   calcExactDividend,
@@ -84,10 +83,10 @@ function homeReducer(state = initialState, action) {
     }
     case CALCULATE_DIVIDENDS: {
       return state
-        .setIn(['dividends', 'w'], calculator(newState.rowData, newState.resultData, newState.commission.w, 'w', calcWinDividend))
-        .setIn(['dividends', 'p'], calculator(newState.rowData, newState.resultData, newState.commission.p, 'p', calcPlaceDividend))
-        .setIn(['dividends', 'e'], calculator(newState.rowData, newState.resultData, newState.commission.e, 'e', calcExactDividend))
-        .setIn(['dividends', 'q'], calculator(newState.rowData, newState.resultData, newState.commission.q, 'q', calcQuinellaDividend));
+        .setIn(['dividends', 'w'], calcWinDividend(newState.rowData, newState.resultData, newState.commission.w, 'w'))
+        .setIn(['dividends', 'p'], calcPlaceDividend(newState.rowData, newState.resultData, newState.commission.p, 'p'))
+        .setIn(['dividends', 'e'], calcExactDividend(newState.rowData, newState.resultData, newState.commission.e, 'e'))
+        .setIn(['dividends', 'q'], calcQuinellaDividend(newState.rowData, newState.resultData, newState.commission.q, 'q'));
     }
     default:
       return state;
