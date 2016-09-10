@@ -16,8 +16,14 @@ const selectDividends = () => createSelector(
   (homeState) => homeState.get('dividends')
 );
 
+const selectIsInputValid = () => createSelector(
+  selectHome(),
+  (homeState) => homeState.get('isInputValid')
+);
+
 export {
   selectHome,
   selectBetData,
   selectDividends,
+  selectIsInputValid,
 };

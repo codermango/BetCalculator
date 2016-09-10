@@ -21,7 +21,8 @@ class CellTextField extends React.Component { // eslint-disable-line react/prefe
   }
 
   textFieldChange(e, value) {
-    if (Number.isNaN(Number(value.trim()))) {
+    const input = value.trim();
+    if (Number.isNaN(Number(input))) {
       this.setState({
         label: 'Please input number!',
         floatingLabelFocusColor: 'red',
@@ -34,11 +35,11 @@ class CellTextField extends React.Component { // eslint-disable-line react/prefe
     }
 
     if ({}.hasOwnProperty.call(this.props, 'rowIndex')) {
-      this.props.cellTextChange(value, this.props.rowIndex, this.props.betType, this.props.field);
+      this.props.cellTextChange(input, this.props.rowIndex, this.props.betType, this.props.field);
     } else if ({}.hasOwnProperty.call(this.props, 'index')) {
-      this.props.cellResultChange(value, this.props.index);
+      this.props.cellResultChange(input, this.props.index);
     } else {
-      this.props.cellCommissionChange(value, this.props.betType);
+      this.props.cellCommissionChange(input, this.props.betType);
     }
     // console.log(this.props.cellTextChange(value));
   }

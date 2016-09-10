@@ -13,8 +13,18 @@ import { createStructuredSelector } from 'reselect';
 import BetTable from 'components/BetTable';
 
 import styles from './styles.css';
-import { fetchData, textChange, commissionChange, resultChange, calculateDividends } from './actions';
-import { selectBetData, selectDividends } from './selectors';
+import {
+  fetchData,
+  textChange,
+  commissionChange,
+  resultChange,
+  calculateDividends,
+} from './actions';
+import {
+  selectBetData,
+  selectDividends,
+  selectIsInputValid,
+} from './selectors';
 
 
 export class HomePage extends React.Component {
@@ -23,6 +33,7 @@ export class HomePage extends React.Component {
     super(props);
     this.state = {
       showResult: false,
+      inputError: false,
     };
     this.betTableTextChange = this.betTableTextChange.bind(this);
     this.betTableCommissionChange = this.betTableCommissionChange.bind(this);
@@ -50,8 +61,13 @@ export class HomePage extends React.Component {
   }
 
   buttonClick() {
+    if (this.props.isInputValid.get('data')) {
+      this.props.calculateDividends();
+      this.setState({ inputError: false });
+    } else {
+      this.setState({ inputError: true });
+    }
     this.setState({ showResult: true });
-    this.props.calculateDividends();
   }
 
   handleClose() {
@@ -60,6 +76,24 @@ export class HomePage extends React.Component {
 
   render() {
     const { betData, dividendsData } = this.props;
+    let showMsg = '';
+    if (this.state.inputError) {
+      showMsg = (
+        <div>There is something wrong with input, please check!</div>
+      );
+    } else if (this.state.showResult) {
+      showMsg = (
+        <div>
+          <div>Win - Runner{betData.get('data').resultData[0]} - ${dividendsData.get('w')}</div>
+          <div>Place - Runner{betData.get('data').resultData[0]} - ${dividendsData.get('p') ? dividendsData.get('p')[0] : ''}</div>
+          <div>Place - Runner{betData.get('data').resultData[1]} - ${dividendsData.get('p') ? dividendsData.get('p')[1] : ''}</div>
+          <div>Place - Runner{betData.get('data').resultData[2]} - ${dividendsData.get('p') ? dividendsData.get('p')[2] : ''}</div>
+          <div>Exact - Runner{betData.get('data').resultData[0]},{betData.get('data').resultData[1]} - ${dividendsData.get('e')}</div>
+          <div>Quinella - Runner{betData.get('data').resultData[0]},{betData.get('data').resultData[1]} - ${dividendsData.get('q')}</div>
+        </div>
+      );
+    }
+
     return (
       <div className={styles.homePage}>
 
@@ -87,12 +121,7 @@ export class HomePage extends React.Component {
             open={this.state.showResult}
             onRequestClose={this.handleClose}
           >
-            <div>Win - Runner{betData.get('data').resultData[0]} - ${dividendsData.get('w')}</div>
-            <div>Place - Runner{betData.get('data').resultData[0]} - ${dividendsData.get('p') ? dividendsData.get('p')[0] : ''}</div>
-            <div>Place - Runner{betData.get('data').resultData[1]} - ${dividendsData.get('p') ? dividendsData.get('p')[1] : ''}</div>
-            <div>Place - Runner{betData.get('data').resultData[2]} - ${dividendsData.get('p') ? dividendsData.get('p')[2] : ''}</div>
-            <div>Exact - Runner{betData.get('data').resultData[0]},{betData.get('data').resultData[1]} - ${dividendsData.get('e')}</div>
-            <div>Quinella - Runner{betData.get('data').resultData[0]},{betData.get('data').resultData[1]} - ${dividendsData.get('q')}</div>
+            {showMsg}
           </Dialog>
           :
           ''
@@ -106,6 +135,7 @@ export class HomePage extends React.Component {
 HomePage.propTypes = {
   betData: React.PropTypes.object,
   dividendsData: React.PropTypes.object,
+  isInputValid: React.PropTypes.bool,
   fetchBetData: React.PropTypes.func,
   textChange: React.PropTypes.func,
   commissionChange: React.PropTypes.func,
@@ -127,6 +157,7 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   betData: selectBetData(),
   dividendsData: selectDividends(),
+  isInputValid: selectIsInputValid(),
 });
 
 // Wrap the component to inject dispatch and state into it
