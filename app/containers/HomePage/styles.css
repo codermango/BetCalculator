@@ -11,12 +11,6 @@
   box-shadow: 0 0 10px #888;
 }
 
-.rowChangeButton {
-  position: fixed;
-  bottom: 5px;
-  right: 5px;
-}
-
 .title {
   text-transform: uppercase;
   padding: 0 10px;
@@ -37,11 +31,6 @@
   bottom: 20px;
 }
 
-.appear {
-  opacity: 0;
-}
-
-.appearActive {
-  opacity: 1;
-  transition: opacity 6000ms ease-in;
+.buttonSection {
+  margin: 5px;
 }

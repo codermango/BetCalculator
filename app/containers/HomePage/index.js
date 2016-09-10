@@ -6,7 +6,9 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { RaisedButton, Dialog } from 'material-ui';
+import { RaisedButton, Dialog, FloatingActionButton } from 'material-ui';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import ContentRemove from 'material-ui/svg-icons/content/remove';
 // import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { createStructuredSelector } from 'reselect';
 
@@ -111,7 +113,17 @@ export class HomePage extends React.Component {
         </div>
 
         <div className={styles.button}>
-          <RaisedButton label="Calculate" onClick={this.buttonClick} />
+          <div className={styles.buttonSection}>
+            <FloatingActionButton>
+              <ContentAdd />
+            </FloatingActionButton>
+            <FloatingActionButton>
+              <ContentRemove />
+            </FloatingActionButton>
+          </div>
+          <div>
+            <RaisedButton label="Calculate" onClick={this.buttonClick} />
+          </div>
         </div>
 
         {betData.get('data') ?
