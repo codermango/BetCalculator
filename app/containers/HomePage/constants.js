@@ -19,4 +19,5 @@ export const COMMISSION_CHANGE = 'COMMISSION_CHANGE';
 export const RESULT_CHANGE = 'RESULT_CHANGE';
 
 export const ADD_ROW = 'ADD_ROW';
+export const REMOVE_ROW = 'REMOVE_ROW';
 export const CALCULATE_DIVIDENDS = 'CALCULATE_DIVIDENDS';

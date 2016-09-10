@@ -23,6 +23,7 @@ import {
   resultChange,
   calculateDividends,
   addRow,
+  removeRow,
 } from './actions';
 import {
   selectBetData,
@@ -45,6 +46,7 @@ export class HomePage extends React.Component {
     this.calculateClick = this.calculateClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.addButtonClick = this.addButtonClick.bind(this);
+    this.removeButtonClick = this.removeButtonClick.bind(this);
   }
 
   componentDidMount() {
@@ -80,6 +82,10 @@ export class HomePage extends React.Component {
 
   addButtonClick() {
     this.props.addRow();
+  }
+
+  removeButtonClick() {
+    this.props.removeRow();
   }
 
   render() {
@@ -124,7 +130,7 @@ export class HomePage extends React.Component {
             <FloatingActionButton onClick={this.addButtonClick}>
               <ContentAdd />
             </FloatingActionButton>
-            <FloatingActionButton>
+            <FloatingActionButton onClick={this.removeButtonClick}>
               <ContentRemove />
             </FloatingActionButton>
           </div>
@@ -162,6 +168,7 @@ HomePage.propTypes = {
   resultChange: React.PropTypes.func,
   calculateDividends: React.PropTypes.func,
   addRow: React.PropTypes.func,
+  removeRow: React.PropTypes.func,
 };
 
 function mapDispatchToProps(dispatch) {
@@ -173,6 +180,7 @@ function mapDispatchToProps(dispatch) {
     resultChange: (data, index) => dispatch(resultChange(data, index)),
     calculateDividends: () => dispatch(calculateDividends()),
     addRow: () => dispatch(addRow()),
+    removeRow: () => dispatch(removeRow()),
     dispatch,
   };
 }

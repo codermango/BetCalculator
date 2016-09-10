@@ -25,6 +25,7 @@ import {
   CALCULATE_DIVIDENDS,
   RESULT_CHANGE,
   ADD_ROW,
+  REMOVE_ROW,
 } from './constants';
 
 
@@ -92,5 +93,11 @@ export function calculateDividends() {
 export function addRow() {
   return {
     type: ADD_ROW,
+  };
+}
+
+export function removeRow() {
+  return {
+    type: REMOVE_ROW,
   };
 }

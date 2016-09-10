@@ -20,6 +20,7 @@ import {
   CALCULATE_DIVIDENDS,
   RESULT_CHANGE,
   ADD_ROW,
+  REMOVE_ROW,
 } from './constants';
 import { fromJS } from 'immutable';
 import {
@@ -135,8 +136,16 @@ function homeReducer(state = initialState, action) {
       return state
         .setIn(['betData', 'loading'], false)
         .setIn(['betData', 'data'], newState)
-        .setIn(['betData', 'error'], false)
-        .setIn(['isInputValid', 'data'], false);
+        .setIn(['betData', 'error'], false);
+    }
+    case REMOVE_ROW: {
+      if (newState.rowData.length > 1) {
+        newState.rowData.pop();
+      }
+      return state
+        .setIn(['betData', 'loading'], false)
+        .setIn(['betData', 'data'], newState)
+        .setIn(['betData', 'error'], false);
     }
     default:
       return state;
