@@ -135,7 +135,7 @@ export class HomePage extends React.Component {
 HomePage.propTypes = {
   betData: React.PropTypes.object,
   dividendsData: React.PropTypes.object,
-  isInputValid: React.PropTypes.bool,
+  isInputValid: React.PropTypes.object,
   fetchBetData: React.PropTypes.func,
   textChange: React.PropTypes.func,
   commissionChange: React.PropTypes.func,

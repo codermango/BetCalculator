@@ -76,11 +76,16 @@ function homeReducer(state = initialState, action) {
         .setIn(['isInputValid', 'data'], isValid);
     }
     case COMMISSION_CHANGE: {
+      let isValid = true;
+      if (Number.isNaN(Number(action.data)) || (action.data.trim() === '')) {
+        isValid = false;
+      }
       newState.commission[action.betType] = action.data;
       return state
         .setIn(['betData', 'loading'], false)
         .update(['betData', 'data'], s => s)
-        .setIn(['betData', 'error'], false);
+        .setIn(['betData', 'error'], false)
+        .setIn(['isInputValid', 'data'], isValid);
     }
     case RESULT_CHANGE: {
       newState.resultData[action.index] = action.data;
@@ -96,20 +101,6 @@ function homeReducer(state = initialState, action) {
         .setIn(['dividends', 'e'], calcExactDividend(newState.rowData, newState.resultData, newState.commission.e, 'e'))
         .setIn(['dividends', 'q'], calcQuinellaDividend(newState.rowData, newState.resultData, newState.commission.q, 'q'));
     }
-    // case INPUT_VALIDATION: {
-    //   let isValid = true;
-    //   outer:
-    //   for (const bet of newState.rowData) {
-    //     for (const rule in bet) {
-    //       if (Number.isNaN(Number(bet[rule].amount)) || (bet[rule].amount === '')) {
-    //         isValid = false;
-    //         break outer;
-    //       }
-    //     }
-    //   }
-    //   return state
-    //     .setIn(['isInputValid', 'data'], isValid);
-    // }
     default:
       return state;
   }
