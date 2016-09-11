@@ -5,7 +5,7 @@
 import { take, call, put, fork, cancel } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { FETCH_DATA } from 'containers/HomePage/constants';
-import { fetchDataSuccess } from 'containers/HomePage/actions';
+import { fetchDataSuccess, fetchDataError } from 'containers/HomePage/actions';
 
 
 const data = {
@@ -34,7 +34,11 @@ const data = {
 
 export function* getDefaultData() {
   const resp = data;
-  yield put(fetchDataSuccess(resp));
+  if (!resp.err) {
+    yield put(fetchDataSuccess(resp));
+  } else {
+    yield put(fetchDataError(resp.err));
+  }
 }
 
 /**

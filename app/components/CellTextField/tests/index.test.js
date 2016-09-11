@@ -1,13 +1,13 @@
 import CellTextField from '../index';
 
 import expect from 'expect';
-import { render } from 'enzyme';
+import { shallow } from 'enzyme';
 import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 describe('<CellTextField />', () => {
   it('should render CellTextField component', () => {
-    const renderedComponent = render(
+    const wrapper = shallow(
       <MuiThemeProvider>
         <CellTextField
           label="test"
@@ -20,6 +20,6 @@ describe('<CellTextField />', () => {
         />
       </MuiThemeProvider>
     );
-    expect(renderedComponent.find(CellTextField)).toExist();
+    expect(wrapper.find(CellTextField)).toExist();
   });
 });
