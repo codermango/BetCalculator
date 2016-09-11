@@ -1,27 +1,30 @@
 import expect from 'expect';
 import homeReducer from '../reducer';
-import {
-  changeUsername,
-} from '../actions';
+// import {
+//   fetchData,
+//   amountChange,
+// } from '../actions';
 import { fromJS } from 'immutable';
 
 describe('homeReducer', () => {
-  let state;
-  beforeEach(() => {
-    state = fromJS({
-      username: '',
-    });
+  const initialState = fromJS({
+    betData: fromJS({
+      loading: false,
+      data: false,
+      error: false,
+    }),
+    dividends: fromJS({
+      w: false,
+      p: false,
+      e: false,
+      q: false,
+    }),
+    isInputValid: fromJS({
+      data: true,
+    }),
   });
 
   it('should return the initial state', () => {
-    const expectedResult = state;
-    expect(homeReducer(undefined, {})).toEqual(expectedResult);
-  });
-
-  it('should handle the changeUsername action correctly', () => {
-    const fixture = 'mxstbr';
-    const expectedResult = state.set('username', fixture);
-
-    expect(homeReducer(state, changeUsername(fixture))).toEqual(expectedResult);
+    expect(homeReducer(undefined, {})).toEqual(initialState);
   });
 });

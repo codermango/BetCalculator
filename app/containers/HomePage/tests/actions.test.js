@@ -1,23 +1,26 @@
 import expect from 'expect';
 
 import {
-  CHANGE_USERNAME,
+  AMOUNT_CHANGE,
 } from '../constants';
 
 import {
-  changeUsername,
+  amountChange,
 } from '../actions';
 
 describe('Home Actions', () => {
-  describe('changeUsername', () => {
-    it('should return the correct type and the passed name', () => {
-      const fixture = 'Max';
+  describe('amountChange', () => {
+    it('should return the correct result', () => {
+      const data = '3';
+      const rowIndex = '0';
+      const betType = 'w';
       const expectedResult = {
-        type: CHANGE_USERNAME,
-        name: fixture,
+        type: AMOUNT_CHANGE,
+        data,
+        rowIndex,
+        betType,
       };
-
-      expect(changeUsername(fixture)).toEqual(expectedResult);
+      expect(amountChange(data, rowIndex, betType)).toEqual(expectedResult);
     });
   });
 });

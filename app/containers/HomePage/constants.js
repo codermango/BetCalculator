@@ -9,4 +9,15 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
-export const CHANGE_USERNAME = 'boilerplate/Home/CHANGE_USERNAME';
+export const FETCH_DATA = 'FETCH_DATA';
+export const FETCH_DATA_SUCCESS = 'FETCH_DATA_SUCCESS';
+export const FETCH_DATA_ERROR = 'FETCH_DATA_ERROR';
+
+export const AMOUNT_CHANGE = 'AMOUNT_CHANGE';
+export const HORSE_CHANGE = 'HORSE_CHANGE';
+export const COMMISSION_CHANGE = 'COMMISSION_CHANGE';
+export const RESULT_CHANGE = 'RESULT_CHANGE';
+
+export const ADD_ROW = 'ADD_ROW';
+export const REMOVE_ROW = 'REMOVE_ROW';
+export const CALCULATE_DIVIDENDS = 'CALCULATE_DIVIDENDS';

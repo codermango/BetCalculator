@@ -6,12 +6,24 @@ import { createSelector } from 'reselect';
 
 const selectHome = () => (state) => state.get('home');
 
-const selectUsername = () => createSelector(
+const selectBetData = () => createSelector(
   selectHome(),
-  (homeState) => homeState.get('username')
+  (homeState) => homeState.get('betData')
+);
+
+const selectDividends = () => createSelector(
+  selectHome(),
+  (homeState) => homeState.get('dividends')
+);
+
+const selectIsInputValid = () => createSelector(
+  selectHome(),
+  (homeState) => homeState.get('isInputValid')
 );
 
 export {
   selectHome,
-  selectUsername,
+  selectBetData,
+  selectDividends,
+  selectIsInputValid,
 };

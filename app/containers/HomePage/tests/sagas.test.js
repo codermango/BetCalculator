@@ -1,91 +1,66 @@
-/**
- * Tests for HomePage sagas
- */
-
 import expect from 'expect';
-import { take, call, put, select, fork, cancel } from 'redux-saga/effects';
+import { take, call, put, fork, cancel } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
-import { getRepos, getReposWatcher, githubData } from '../sagas';
+import { getDefaultData, getBetDataWatcher, betData } from '../sagas';
+import { fetchDataSuccess } from '../actions';
+import { FETCH_DATA } from '../constants';
 
-import { LOAD_REPOS } from 'containers/App/constants';
-import { reposLoaded, repoLoadingError } from 'containers/App/actions';
 
-import request from 'utils/request';
-import { selectUsername } from 'containers/HomePage/selectors';
+describe('getDefaultData Saga', () => {
+  const getDefaultDataGenerator = getDefaultData();
 
-const username = 'mxstbr';
-
-describe('getRepos Saga', () => {
-  let getReposGenerator;
-
-  // We have to test twice, once for a successful load and once for an unsuccessful one
-  // so we do all the stuff that happens beforehand automatically in the beforeEach
-  beforeEach(() => {
-    getReposGenerator = getRepos();
-
-    const selectDescriptor = getReposGenerator.next().value;
-    expect(selectDescriptor).toEqual(select(selectUsername()));
-
-    const requestURL = `https://api.github.com/users/${username}/repos?type=all&sort=updated`;
-    const callDescriptor = getReposGenerator.next(username).value;
-    expect(callDescriptor).toEqual(call(request, requestURL));
-  });
-
-  it('should dispatch the reposLoaded action if it requests the data successfully', () => {
+  it('should dispatch the fetchDataSuccess action if it requests the data successfully', () => {
     const response = {
-      data: [{
-        name: 'First repo',
-      }, {
-        name: 'Second repo',
-      }],
+      commission: {
+        w: 0.15,
+        p: 0.12,
+        e: 0.18,
+        q: 0.18,
+      },
+      rowData: [
+        { w: { horse: ['1'], amount: 3 }, p: { horse: ['1'], amount: 31 }, e: { horse: ['1', '2'], amount: 13 }, q: { horse: ['1', '2'], amount: 19 } },
+      ],
+      resultData: ['2', '3', '1'],
     };
-    const putDescriptor = getReposGenerator.next(response).value;
-    expect(putDescriptor).toEqual(put(reposLoaded(response.data, username)));
-  });
-
-  it('should call the repoLoadingError action if the response errors', () => {
-    const response = {
-      err: 'Some error',
-    };
-    const putDescriptor = getReposGenerator.next(response).value;
-    expect(putDescriptor).toEqual(put(repoLoadingError(response.err)));
+    const putDescriptor = getDefaultDataGenerator.next(response).value;
+    expect(putDescriptor).toEqual(put(fetchDataSuccess(response)));
   });
 });
 
-describe('getReposWatcher Saga', () => {
-  const getReposWatcherGenerator = getReposWatcher();
+describe('getBetDataWatcher Saga', () => {
+  const getBetDataWatcherGenerator = getBetDataWatcher();
 
-  it('should watch for LOAD_REPOS action', () => {
-    const takeDescriptor = getReposWatcherGenerator.next().value;
-    expect(takeDescriptor).toEqual(take(LOAD_REPOS));
+  it('should watch for FETCH_DATA action', () => {
+    const takeDescriptor = getBetDataWatcherGenerator.next().value;
+    expect(takeDescriptor).toEqual(take(FETCH_DATA));
   });
 
-  it('should invoke getRepos saga on actions', () => {
-    const callDescriptor = getReposWatcherGenerator.next(put(LOAD_REPOS)).value;
-    expect(callDescriptor).toEqual(call(getRepos));
+  it('should invoke getDefaultData saga on actions', () => {
+    const callDescriptor = getBetDataWatcherGenerator.next(put(FETCH_DATA)).value;
+    expect(callDescriptor).toEqual(call(getDefaultData));
   });
 });
 
-describe('githubDataSaga Saga', () => {
-  const githubDataSaga = githubData();
+describe('betData Saga', () => {
+  const betDataSaga = betData();
 
   let forkDescriptor;
 
-  it('should asyncronously fork getReposWatcher saga', () => {
-    forkDescriptor = githubDataSaga.next();
-    expect(forkDescriptor.value).toEqual(fork(getReposWatcher));
+  it('should asyncronously fork getBetDataWatcher saga', () => {
+    forkDescriptor = betDataSaga.next();
+    expect(forkDescriptor.value).toEqual(fork(getBetDataWatcher));
   });
 
   it('should yield until LOCATION_CHANGE action', () => {
-    const takeDescriptor = githubDataSaga.next();
+    const takeDescriptor = betDataSaga.next();
     expect(takeDescriptor.value).toEqual(take(LOCATION_CHANGE));
   });
 
-  it('should finally cancel() the forked getReposWatcher saga',
-    function* githubDataSagaCancellable() {
+  it('should finally cancel() the forked getBetDataWatcher saga',
+    function* betDataSagaCancellable() {
       // reuse open fork for more integrated approach
-      forkDescriptor = githubDataSaga.next(put(LOCATION_CHANGE));
+      forkDescriptor = betDataSaga.next(put(LOCATION_CHANGE));
       expect(forkDescriptor.value).toEqual(cancel(forkDescriptor));
     }
   );

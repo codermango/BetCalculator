@@ -1,0 +1,16 @@
+.betTable { /* stylelint-disable */
+
+}
+
+.appear {
+  opacity: 0;
+}
+
+.appearActive {
+  opacity: 1;
+  transition: opacity 6000ms ease-in;
+}
+
+.resultSection {
+  display: flex;
+}
